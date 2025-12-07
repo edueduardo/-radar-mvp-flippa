@@ -3,65 +3,48 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useTranslation } from 'next-i18next'
-import { Shield, BookOpen, MessageCircle, ChevronRight, Heart, Lock, Phone, Menu, X, BarChart3, Globe, Check, Moon, Sun, Monitor, ArrowUp, Users, Sparkles, RefreshCw, FileText, Lightbulb, MapPin, Star, TrendingUp } from 'lucide-react'
-import HeaderMenuDropdown, { MobileMenuDropdown } from '../../components/HeaderMenuDropdown'
-import SocialProofWidget from '../../components/SocialProofWidget'
-import SkipLinks, { SectionMarker, ScreenReaderAnnouncement } from '../../components/SkipLinks'
-import { initializeEasterEggs } from '../../lib/easter-eggs'
-import { initializeUltraSecrets } from '../../lib/easter-eggs-secret'
-import { initializeHiddenPowers } from '../../lib/hidden-powers'
-import { getDisplayPlans } from '../../lib/plans-config'
-import { useConsumerPlans, type PlanWithPromotion } from '../../hooks/usePlans'
-import DynamicSections from '../../components/frontpage/DynamicSections'
+import { Shield, BookOpen, MessageCircle, ChevronRight, BarChart3, Globe } from 'lucide-react'
+import { useTranslation as useI18n, type Locale } from '../../lib/i18n'
 
 type Theme = 'light' | 'dark' | 'high-contrast'
 
+// Map URL locale to i18n locale
+function mapLocale(urlLocale: string): Locale {
+  const map: Record<string, Locale> = {
+    'pt': 'pt-BR',
+    'pt-BR': 'pt-BR',
+    'en': 'en',
+    'es': 'es'
+  }
+  return map[urlLocale] || 'pt-BR'
+}
+
 export default function LocalizedHomePage({ params }: { params: Promise<{ locale: string }> }) {
-  const { t } = useTranslation('common')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [langOpen, setLangOpen] = useState(false)
-  const [theme, setTheme] = useState<Theme>('dark')
-  const [showBackToTop, setShowBackToTop] = useState(false)
+  const [currentLocale, setCurrentLocale] = useState<Locale>('pt-BR')
+  const [urlLocale, setUrlLocale] = useState('pt')
+  const { t } = useI18n(currentLocale)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [periodo, setPeriodo] = useState<'mensal' | 'anual'>('mensal')
   const router = useRouter()
-  const [currentLocale, setCurrentLocale] = useState('pt')
   
   // Obter locale dos params
   useEffect(() => {
     const getLocale = async () => {
       const { locale } = await params
-      setCurrentLocale(locale)
+      setUrlLocale(locale)
+      setCurrentLocale(mapLocale(locale))
     }
     getLocale()
   }, [params])
-  
-  // Planos do banco de dados (com fallback para hardcoded)
-  const { plans: dbPlans, source: plansSource } = useConsumerPlans(currentLocale)
-  
-  // Usar planos do banco se disponíveis, senão fallback
-  const displayPlans = dbPlans.length > 0 
-    ? dbPlans.filter(p => !p.comingSoon)
-    : getDisplayPlans(false, false).filter(p => !p.comingSoon)
 
-  // Scroll progress + botão voltar ao topo
+  // Scroll progress
   useEffect(() => {
     const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 500)
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight
       const progress = (window.scrollY / totalHeight) * 100
       setScrollProgress(progress)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Easter eggs
-  useEffect(() => {
-    initializeEasterEggs()
-    initializeUltraSecrets()
-    initializeHiddenPowers()
   }, [])
 
   return (
@@ -79,7 +62,7 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <Link href={`/${currentLocale}/dashboard`} className="text-white font-bold text-xl">
+              <Link href={`/${urlLocale}/dashboard`} className="text-white font-bold text-xl">
                 {t('app.name')}
               </Link>
               <span className="text-purple-400 text-sm hidden sm:inline">
@@ -88,24 +71,24 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
             </div>
 
             <nav className="hidden md:flex items-center space-x-6">
-              <Link href={`/${currentLocale}/dashboard`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/${urlLocale}/dashboard`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.dashboard')}
               </Link>
-              <Link href={`/${currentLocale}/diario`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/${urlLocale}/diario`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.diary')}
               </Link>
-              <Link href={`/${currentLocale}/teste-clareza`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/${urlLocale}/teste-clareza`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.clarity_test')}
               </Link>
-              <Link href={`/${currentLocale}/chat`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/${urlLocale}/chat`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.ai_coach')}
               </Link>
             </nav>
 
             <div className="flex items-center space-x-4">
-              <LanguageSelector currentLocale={currentLocale} />
+              <LanguageSelector currentLocale={urlLocale} />
               <Link 
-                href={`/${currentLocale}/login`}
+                href={`/${urlLocale}/login`}
                 className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
               >
                 {t('navigation.login')}
@@ -137,14 +120,14 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
-              href={`/${currentLocale}/teste-clareza`}
+              href={`/${urlLocale}/teste-clareza`}
               className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition flex items-center justify-center"
             >
               {t('hero.cta_test')}
               <ChevronRight className="ml-2 w-5 h-5" />
             </Link>
             <Link 
-              href={`/${currentLocale}/dashboard`}
+              href={`/${urlLocale}/dashboard`}
               className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition flex items-center justify-center"
             >
               {t('hero.cta_learn')}
@@ -202,9 +185,9 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { key: 'test', icon: Shield, href: `/${currentLocale}/teste-clareza` },
-              { key: 'diary', icon: BookOpen, href: `/${currentLocale}/diario` },
-              { key: 'coach', icon: MessageCircle, href: `/${currentLocale}/chat` }
+              { key: 'test', icon: Shield, href: `/${urlLocale}/teste-clareza` },
+              { key: 'diary', icon: BookOpen, href: `/${urlLocale}/diario` },
+              { key: 'coach', icon: MessageCircle, href: `/${urlLocale}/chat` }
             ].map((tool, i) => (
               <Link key={i} href={tool.href} className="bg-slate-800/50 p-6 rounded-xl hover:bg-slate-700/50 transition">
                 <div className="bg-purple-600/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
@@ -239,7 +222,6 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
 
 function LanguageSelector({ currentLocale }: { currentLocale: string }) {
   const router = useRouter()
-  const { t } = useTranslation('common')
   const [isOpen, setIsOpen] = useState(false)
 
   const locales = [
