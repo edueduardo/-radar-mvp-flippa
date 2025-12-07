@@ -62,7 +62,7 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <Link href={`/${urlLocale}/dashboard`} className="text-white font-bold text-xl">
+              <Link href={`/dashboard`} className="text-white font-bold text-xl">
                 {t('app.name')}
               </Link>
               <span className="text-purple-400 text-sm hidden sm:inline">
@@ -71,16 +71,16 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
             </div>
 
             <nav className="hidden md:flex items-center space-x-6">
-              <Link href={`/${urlLocale}/dashboard`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/dashboard`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.dashboard')}
               </Link>
-              <Link href={`/${urlLocale}/diario`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/diario`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.diary')}
               </Link>
-              <Link href={`/${urlLocale}/teste-clareza`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/teste-clareza`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.clarity_test')}
               </Link>
-              <Link href={`/${urlLocale}/chat`} className="text-white hover:text-purple-400 transition">
+              <Link href={`/chat`} className="text-white hover:text-purple-400 transition">
                 {t('navigation.ai_coach')}
               </Link>
             </nav>
@@ -88,7 +88,7 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
             <div className="flex items-center space-x-4">
               <LanguageSelector currentLocale={urlLocale} />
               <Link 
-                href={`/${urlLocale}/login`}
+                href={`/login`}
                 className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
               >
                 {t('navigation.login')}
@@ -120,14 +120,14 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
-              href={`/${urlLocale}/teste-clareza`}
+              href={`/teste-clareza`}
               className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition flex items-center justify-center"
             >
               {t('hero.cta_test')}
               <ChevronRight className="ml-2 w-5 h-5" />
             </Link>
             <Link 
-              href={`/${urlLocale}/dashboard`}
+              href={`/dashboard`}
               className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition flex items-center justify-center"
             >
               {t('hero.cta_learn')}
@@ -185,9 +185,9 @@ export default function LocalizedHomePage({ params }: { params: Promise<{ locale
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { key: 'test', icon: Shield, href: `/${urlLocale}/teste-clareza` },
-              { key: 'diary', icon: BookOpen, href: `/${urlLocale}/diario` },
-              { key: 'coach', icon: MessageCircle, href: `/${urlLocale}/chat` }
+              { key: 'test', icon: Shield, href: `/teste-clareza` },
+              { key: 'diary', icon: BookOpen, href: `/diario` },
+              { key: 'coach', icon: MessageCircle, href: `/chat` }
             ].map((tool, i) => (
               <Link key={i} href={tool.href} className="bg-slate-800/50 p-6 rounded-xl hover:bg-slate-700/50 transition">
                 <div className="bg-purple-600/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
