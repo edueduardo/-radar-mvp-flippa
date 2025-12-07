@@ -1,0 +1,12 @@
+// Componentes dinâmicos da Frontpage
+export { default as DynamicBlocks } from './DynamicBlocks'
+export { default as RadarEmNumeros } from './RadarEmNumeros'
+export { default as FAQDinamico } from './FAQDinamico'
+export { default as RadarAcademy } from './RadarAcademy'
+export { default as RadarNoMundo } from './RadarNoMundo'
+export { default as ClimaEmocional } from './ClimaEmocional'
+export { default as TrianguloExplicado } from './TrianguloExplicado'
+export { default as LinhaDoTempoGlobal } from './LinhaDoTempoGlobal'
+export { default as PerguntasDaSemana } from './PerguntasDaSemana'
+export { default as SinaisDeAlertaEmAlta } from './SinaisDeAlertaEmAlta'
+export { default as BibliotecaViva } from './BibliotecaViva'

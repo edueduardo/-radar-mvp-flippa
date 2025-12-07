@@ -1,0 +1,69 @@
+{
+  "name": "Radar Narcisista BR",
+  "short_name": "Radar",
+  "description": "Ferramenta de apoio para identificar padrões abusivos e encontrar clareza emocional",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf5ff",
+  "theme_color": "#9333ea",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "pt-BR",
+  "categories": ["health", "lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "256x256",
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile.svg",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Dashboard mobile do Radar Narcisista"
+    },
+    {
+      "src": "/screenshots/desktop.svg",
+      "sizes": "1920x1080",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Dashboard desktop do Radar Narcisista"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Teste de Clareza",
+      "short_name": "Teste",
+      "description": "Fazer o teste de clareza",
+      "url": "/teste-clareza"
+    },
+    {
+      "name": "Emergência",
+      "short_name": "SOS",
+      "description": "Números de emergência",
+      "url": "/seguranca"
+    },
+    {
+      "name": "Diário",
+      "short_name": "Diário",
+      "description": "Registrar episódio",
+      "url": "/diario"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}

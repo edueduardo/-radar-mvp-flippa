@@ -1,0 +1,213 @@
+{
+  "app": {
+    "name": "Narcissist Radar",
+    "tagline": "Clarity for toxic relationships",
+    "description": "Support tool to identify and document abusive patterns"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "diary": "Diary",
+    "clarity_test": "Clarity Test",
+    "ai_coach": "AI Coach",
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Sign Up",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "subtitle": "Your clarity journey starts here",
+    "recent_entries": "Recent Entries",
+    "mood_tracker": "Mood Tracker",
+    "risk_indicators": "Risk Indicators",
+    "next_steps": "Next Steps",
+    "view_all": "View All"
+  },
+  "diary": {
+    "title": "Emotional Diary",
+    "new_entry": "New Entry",
+    "entry_title": "Entry Title",
+    "entry_content": "What happened?",
+    "how_feel": "How are you feeling?",
+    "tags_suggested": "Suggested",
+    "risk_level": "Risk Level",
+    "save_entry": "Save Entry",
+    "timeline": "Timeline",
+    "no_entries": "No entries yet"
+  },
+  "clarity_test": {
+    "title": "Clarity Test",
+    "subtitle": "Self-assessment to gain clarity about your relationship",
+    "start_test": "Start Test",
+    "question": "Question",
+    "progress": "Progress",
+    "finish": "Finish",
+    "results": "Results",
+    "score": "Score",
+    "interpretation": "Interpretation",
+    "recommendations": "Recommendations"
+  },
+  "ai_coach": {
+    "title": "Clarity Coach",
+    "subtitle": "Chat with our AI to gain perspective",
+    "ask_question": "Ask a question",
+    "type_message": "Type your message...",
+    "send": "Send",
+    "thinking": "Thinking...",
+    "response": "Response",
+    "examples": "Example questions:"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "forgot_password": "Forgot password?",
+    "remember_me": "Remember me",
+    "already_have_account": "Already have an account?",
+    "dont_have_account": "Don't have an account?",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "sign_out": "Sign Out"
+  },
+  "plans": {
+    "title": "Our Plans",
+    "free": "Free",
+    "premium": "Premium",
+    "professional": "Professional",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "cancel": "Cancel Plan",
+    "current_plan": "Current Plan",
+    "choose_plan": "Choose Plan"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "users": "Users",
+    "professionals": "Professionals",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "ai_config": "AI Configuration",
+    "export_data": "Export Data",
+    "system_status": "System Status"
+  },
+  "errors": {
+    "404": "Page not found",
+    "500": "Internal server error",
+    "network": "Connection error",
+    "validation": "Validation error",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access denied",
+    "try_again": "Try again",
+    "contact_support": "Contact support"
+  },
+  "success": {
+    "saved": "Saved successfully!",
+    "updated": "Updated successfully!",
+    "deleted": "Deleted successfully!",
+    "sent": "Sent successfully!"
+  },
+  "loading": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "sending": "Sending...",
+    "processing": "Processing..."
+  },
+  "hero": {
+    "title1": "You're not",
+    "title2": "imagining things.",
+    "subtitle": "If you're here, you've probably asked yourself:",
+    "question1": "\"Am I overreacting?\"",
+    "question2": "\"Why do I feel so confused after talking to this person?\"",
+    "question3": "\"Is it my fault?\"",
+    "question4": "\"Why does no one else seem to see what I see?\"",
+    "validation1": "You're not crazy.",
+    "validation2": "And you're not alone.",
+    "help": "Narcissist Radar helps you",
+    "clarity": "see clearly",
+    "whats_happening": "what's happening.",
+    "cta_test": "Take the Free Test",
+    "cta_learn": "Learn More"
+  },
+  "header": {
+    "safe": "100% Safe and Confidential",
+    "tagline": "Find your clarity"
+  },
+  "howItWorks": {
+    "title": "How it works in 3 steps",
+    "subtitle": "Simple, fast, and 100% confidential",
+    "step1": {
+      "title": "Take the Test",
+      "desc": "18 questions in 5 minutes. No registration required."
+    },
+    "step2": {
+      "title": "See Your Result",
+      "desc": "Understand the patterns of fog, fear, and boundaries in your relationship."
+    },
+    "step3": {
+      "title": "Use the Tools",
+      "desc": "Diary, AI Coach, and exclusive resources for your journey."
+    },
+    "cta": "Start Free Test →"
+  },
+  "tools": {
+    "title": "Your Tools",
+    "subtitle": "Everything you need to understand, document, and plan",
+    "test": {
+      "title": "Clarity Test",
+      "desc": "18 questions that help you identify patterns of confusion, fear, and boundaries."
+    },
+    "diary": {
+      "title": "Episode Diary",
+      "desc": "Record situations, emotions, and patterns. Your safe and organized memory."
+    },
+    "coach": {
+      "title": "AI Clarity Coach",
+      "desc": "Talk to an empathetic AI that helps you organize your thoughts."
+    }
+  },
+  "choose": {
+    "title": "You choose how to use",
+    "subtitle": "Two ways to start your journey",
+    "quick": {
+      "title": "Quick Test",
+      "subtitle": "No account",
+      "desc": "Take the test, see your result, and leave. Nothing is saved.",
+      "cta": "Start Test →"
+    },
+    "radar": {
+      "title": "Full Radar",
+      "subtitle": "With free account",
+      "desc": "Your test becomes the Radar base: feeds diary, AI Coach, and recommendations.",
+      "cta": "Create Free Account →"
+    }
+  },
+  "finalCta": {
+    "title": "Ready for more clarity?",
+    "subtitle": "The first step is the hardest. But you don't have to take it alone.",
+    "cta": "Start the Free Test"
+  },
+  "footer": {
+    "description": "Self-awareness tool for people in difficult relationships.",
+    "product": "Product",
+    "support": "Support",
+    "emergency": "Emergency",
+    "copyright": "© 2024 Narcissist Radar. All rights reserved."
+  }
+}

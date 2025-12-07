@@ -1,0 +1,2015 @@
+================================================================================
+RADAR NARCISISTA – ATLAS COMPLETO DO PROJETO (CÓDIGO REAL)
+================================================================================
+Data/hora da geração: 30/11/2025 20:20 (UTC-5)
+Ambiente: projeto local do Eduardo (Windsurf)
+Gerado por: Windsurf AI (Cascade)
+
+ÚLTIMA ATUALIZAÇÃO: 03/12/2025 15:30 (UTC-5)
+
+================================================================================
+UI CORE REGISTRY - REGISTRO CENTRAL DE INTERFACES (03/12/2025)
+================================================================================
+
+📊 STATUS: ✅ IMPLEMENTADO
+
+📁 ARQUIVO: lib/ui-core-registry.ts
+
+FONTE DA VERDADE para todas as telas do sistema.
+A partir dele são construídos:
+- Menu do ADMIN
+- Dashboard da USUÁRIA
+- Dashboard do PROFISSIONAL
+- Painel WHITE-LABEL
+- Painel GERADOR DE SAAS
+
+ESTATÍSTICAS:
+| Audience | Grupos | Telas |
+|----------|--------|-------|
+| admin | 8 | 55 |
+| user | 5 | 17 |
+| professional | 4 | 8 |
+| whitelabel | 4 | 8 |
+| generator | 4 | 8 |
+| TOTAL | 25 | 96 |
+
+REGRA: Todo novo menu/tela/dash DEVE ser registrado aqui.
+
+================================================================================
+ADMIN MENU CORE - ORGANIZAÇÃO DO MENU ADMINISTRATIVO (03/12/2025)
+================================================================================
+
+📊 STATUS: ✅ IMPLEMENTADO
+
+📁 ARQUIVO: lib/admin-core-menu.ts
+
+ORGANIZAÇÃO EM 8 GRUPOS:
+| # | Grupo | Ícone | Itens |
+|---|-------|-------|-------|
+| 1 | Visão Geral & Controle | 🎯 | 9 |
+| 2 | Pessoas & Acessos | 👥 | 5 |
+| 3 | Planos, Billing & Promoções | 💳 | 5 |
+| 4 | IAs & Orquestração | 🤖 | 10 |
+| 5 | Produto & Funcionalidades | 🎯 | 7 |
+| 6 | Front & Conteúdos | 🎨 | 8 |
+| 7 | Governança & LGPD | ⚖️ | 5 |
+| 8 | Laboratório & Dev | 🧪 | 6 |
+
+TOTAL: 55 itens de menu (43 implementados, 12 placeholders)
+
+REUTILIZAÇÃO:
+- RADAR (projeto mãe) - usa diretamente
+- GERADOR DE SAAS - copia como base
+- WHITE LABEL - herda estrutura
+
+================================================================================
+AI_PERSONAS - SISTEMA DE AVATARES DE IA (03/12/2025)
+================================================================================
+
+📊 STATUS: ⏳ SQL PRONTO, PENDENTE EXECUÇÃO
+
+📁 SQL: database/migrate-ai-personas.sql
+
+✅ TABELAS (5):
+| Tabela | Descrição |
+|--------|-----------|
+| ai_providers | Provedores reais (visão admin) |
+| ai_personas | Avatares/Personas (visão usuário) |
+| ai_persona_bindings | Ligação Persona → Contexto |
+| ai_persona_logs | Logs de uso |
+| ai_transparency_settings | Configurações de transparência |
+
+✅ PERSONAS PADRÃO (6):
+- Mentora Calma 🕊️
+- Analista Lógico 🧠
+- Guardião de Segurança 🛡️
+- Curador de Conteúdo 📚
+- Assistente Profissional 💼
+- Oráculo do Sistema 🔮
+
+✅ PÁGINAS:
+- /admin/ia-personas - Cockpit de Personas
+
+✅ SERVIÇOS:
+- lib/ai-personas.ts - Funções de personas
+- components/chat/PersonaSelector.tsx - Seletor de persona
+
+================================================================================
+MENU HELP - SISTEMA DE AJUDA EMBUTIDA (03/12/2025)
+================================================================================
+
+📊 STATUS: ✅ IMPLEMENTADO
+
+📁 ARQUIVOS:
+- lib/menu-help-registry.ts - Registry de helps
+- components/MenuHelpModal.tsx - Componentes de UI
+- docs/MENU-HELP-ADMIN.md - Documentação
+
+MENUS COBERTOS: 17
+- Admin: 9 menus
+- Usuária: 5 menus
+- Profissional: 1 menu
+- White Label: 1 menu
+- Gerador: 1 menu
+
+================================================================================
+AI_CONFIG_CORE - SISTEMA DE CONFIGURAÇÃO DE IAs (03/12/2025)
+================================================================================
+
+📊 STATUS: ✅ IMPLEMENTADO E EXECUTADO NO SUPABASE
+
+✅ TABELAS CRIADAS (8):
+| Tabela | Descrição | Registros |
+|--------|-----------|-----------|
+| ai_providers_core | Provedores de IA | 5 |
+| ai_features_core | Features de IA | 8 |
+| ai_feature_providers_core | Relacionamento | - |
+| ai_plan_matrix | Configuração por plano | - |
+| ai_group_overrides | Overrides por grupo | - |
+| ai_feature_menu_map | Mapeamento de menus | 8 |
+| ai_usage_stats_daily | Estatísticas diárias | - |
+| ai_usage_logs | Logs detalhados | - |
+
+✅ VIEWS CRIADAS (3):
+- ai_usage_by_provider
+- ai_usage_by_feature
+- ai_usage_by_plan
+
+✅ FUNÇÕES CRIADAS:
+- ai_get_providers_for_context(perfil, feature, plan)
+
+✅ PÁGINAS ADMIN:
+- /admin/ia-matrix - Configurar IAs por plano
+- /admin/ia-mapa-menus - Ver IAs por menu
+- /admin/ia-carga - Dashboard de uso
+
+✅ SERVIÇO:
+- lib/ai-config-core.ts - Métodos do PATCH 31-35
+
+📁 SQL: database/migrate-ai-config-core-SIMPLES.sql
+
+================================================================================
+PLANOS_CORE - SISTEMA DE FEATURES E PLANOS (03/12/2025)
+================================================================================
+
+📊 STATUS: ⏳ SQL PRONTO, PENDENTE EXECUÇÃO
+
+✅ TABELAS (6):
+| Tabela | Descrição |
+|--------|-----------|
+| features | Features atômicas (16 features) |
+| feature_profiles | Perfis versionados (4 profiles) |
+| feature_profile_features | Relacionamento |
+| plan_catalog | Catálogo de planos (4 planos) |
+| user_feature_overrides | Overrides individuais |
+| user_subscriptions_core | Assinaturas |
+
+✅ FUNÇÕES:
+- get_effective_features(user_id) - Retorna features efetivas
+- has_feature(user_id, feature_key) - Verifica acesso
+- get_feature_limit(user_id, feature_key, periodo) - Retorna limite
+
+✅ MELHORIAS APLICADAS:
+- Coluna plan_key adicionada (alias de plan_slug)
+- Índice composto idx_fpf_profile_feature
+- Índice idx_user_subs_plan_key
+
+📁 SQL: database/migrate-planos-core.sql
+
+================================================================================
+CONTROL PLANE GLOBAL (03/12/2025)
+================================================================================
+
+📊 STATUS: ✅ DOCUMENTADO
+
+📁 ARQUIVO: docs/CONTROL-PLANE.md
+
+TRÊS CAMADAS:
+1. CÓDIGO (APP) - Muda com deploy
+2. CONFIGURAÇÃO (BANCO) - Muda sem deploy
+3. CONTROL PLANE (PAINEL) - Interface de gestão
+
+MODOS DE ADMINISTRAÇÃO:
+- MODO A: Admin local (/admin) - ATUAL
+- MODO B: Control Hub externo - FUTURO (BLOCO 46-50)
+
+================================================================================
+AUDITORIA ETAPA 7.2 – PLANO DE INTEGRAÇÃO (02/12/2025 21:00)
+================================================================================
+
+📊 STATUS: 90% IMPLEMENTADO - MVP FUNCIONAL
+
+✅ IMPLEMENTADO (10/14 itens):
+| Item | Arquivo | Linhas |
+|------|---------|--------|
+| API /api/safety-plan | app/api/safety-plan/route.ts | 1-332 |
+| Tipo 'safety_plan' | types/database.ts | 44 |
+| Card Dashboard | app/dashboard/page.tsx | 1121-1160 |
+| Banner risco Dashboard | app/dashboard/page.tsx | 1036-1118 |
+| Regex Chat | app/chat/page.tsx | 373 |
+| Banner Chat | app/chat/page.tsx | 126 |
+| risk_alert Chat | app/chat/page.tsx | 375-410 |
+| risk_alert Clareza | app/api/clarity/activate-profile/route.ts | 290-315 |
+| Badge Diário | app/diario/page.tsx | 356-363 |
+| Badge Timeline | app/diario/timeline/page.tsx | 673-677 |
+
+⚠️ PENDENTE-V2 (4/14 itens):
+- Detecção via Diário (tags graves)
+- Detecção via IA (análise semântica)
+- Centro de alertas no Dashboard
+- Notificações push/email
+
+📁 ARQUIVO DETALHADO: ANALISE-ETAPA-7.2-IMPLEMENTACAO.md
+
+================================================================================
+MUDANÇAS RECENTES (02/12/2025 19:00 → 19:30) - BLOCO 32-35 EM ANDAMENTO
+================================================================================
+
+🚀 BLOCO 32-35 - CONTROL TOWER, TELEMETRIA, HELP DESK E GERADOR DE SAAS
+
+✅ ETAPA 32 - CONTROL TOWER & REGISTRO GLOBAL DE PROJETOS
+- database/migrate-control-tower.sql - Tabelas:
+  - projects_core (registro de todos os projetos)
+  - owners_core (donos/responsáveis)
+  - project_flags_core (flags por projeto)
+- lib/control-tower.ts - Helpers completos
+- app/api/admin/control-tower/route.ts - API CRUD
+- app/api/admin/control-tower/[id]/route.ts - Detalhes
+- app/admin/control-tower/page.tsx - UI completa
+- admin-features-registry.ts atualizado
+
+✅ ETAPA 33 - TELEMETRIA CORE PARA TODOS OS SAAS
+- database/migrate-telemetry-core.sql - Tabelas:
+  - telemetry_heartbeats_core (heartbeats)
+  - telemetry_errors_core (erros)
+  - telemetry_metrics_core (métricas agregadas)
+- lib/telemetry-core.ts - Helpers completos
+- app/api/core/telemetry/heartbeat/route.ts - API heartbeat
+- app/api/core/telemetry/error/route.ts - API erros
+
+✅ ETAPA 34 - HELP DESK GLOBAL E REPORTAR PROBLEMA
+- database/migrate-helpdesk-core.sql - Tabelas:
+  - support_tickets_core (tickets)
+  - support_ticket_messages_core (mensagens)
+- lib/helpdesk-core.ts - Helpers completos
+- app/api/core/support-ticket/route.ts - API tickets
+- components/SupportTicketButton.tsx - Botão reutilizável
+- app/admin/control-tower/helpdesk/page.tsx - UI Help Desk
+
+🔄 ETAPA 35 - VÍNCULO, DESVÍNCULO E VIDA PRÓPRIA DOS FILHOS
+- Campos vinculo_nucleo e politica_suporte já em projects_core
+- docs/CONTROL-TOWER.md - Documentação completa
+
+================================================================================
+BLOCO 26-30 COMPLETO (ANTERIOR)
+================================================================================
+
+🎉 BLOCO 26-30 COMPLETO - ORÁCULO V2 MULTIPERFIL + INFRA COMUNICAÇÃO IA
+
+✅ ETAPA 26 - TEMPLATE DE RESUMO + CHECKLIST + REGRAS DE LINGUAGEM
+- docs/FORMATO-RESUMO-ETAPAS.md v3.0
+- docs/REGRAS-COMUNICACAO-IA.md v2.0
+- docs/CHECKLIST-RESUMO-IA.md v2.0
+- scripts/validar-resumo-ia.ts atualizado
+
+✅ ETAPA 27 - ORACULO_V2_CORE (NÚCLEO REUTILIZÁVEL)
+- lib/oraculo-core.ts - Núcleo completo com:
+  - buildSystemPrompt(), buildUserContext(), parseOraculoResponse()
+  - callOraculo() - função principal
+  - buildInstancePrompt() - suporte a instâncias whitelabel
+  - Prompts por perfil: admin, usuaria, profissional, dev, whitelabel
+- docs/ORACULO-CORE.md - Documentação técnica completa
+
+✅ ETAPA 28 - INFRA MULTIPERFIL (FLAGS POR PLANO/PERFIL)
+- lib/oraculo-settings.ts - Helpers de permissões:
+  - canUseOraculo(), registerOraculoUsage()
+  - getOraculoSettings(), updateOraculoSettings()
+  - listAllOraculoSettings(), getOraculoUsage()
+- database/migrate-oraculo-settings.sql:
+  - Tabela oraculo_plan_settings (status, limites)
+  - Tabela oraculo_usage (contadores por período)
+  - Funções SQL: can_use_oraculo(), register_oraculo_usage()
+- app/api/oraculo-v2/route.ts integrado com settings
+
+✅ ETAPA 29 - ORÁCULO V2 PARA NOVOS PERFIS (FASE 1)
+- components/OraculoMultiperfil.tsx - UI completa:
+  - Suporte a todos os perfis
+  - Cores e sugestões por perfil
+  - Exibição de limites de uso
+  - Mensagens de segurança
+- components/OraculoHint.tsx - Dicas contextuais
+
+✅ ETAPA 30 - INTEGRAÇÃO COM GERADOR DE SAAS + QA
+- docs/ORACULO-CORE-SAAS.md - Guia completo de integração:
+  - Arquitetura de integração
+  - Passo a passo de implementação
+  - Customização de prompts e perfis
+  - Checklist de segurança e deploy
+
+================================================================================
+MUDANÇAS ANTERIORES (01/12/2025 22:40 → 23:35)
+================================================================================
+
+🎉 BLOCO 40-44 CONCLUÍDO!
+
+- ETAPA 42: DASHBOARD ANALYTICS AVANÇADO (✅ CONCLUÍDO)
+  - app/admin/analytics-dashboard/page.tsx criado
+  - 6 cards de métricas com variação percentual
+  - Gráficos: área (queries), barras (tokens), pizza (status), horizontal (instâncias)
+  - Filtro de período: 7, 30, 90 dias
+  - Tabela detalhada por instância
+  - Build passou: 170 páginas
+
+- ETAPA 43: ALERTAS AUTOMÁTICOS (✅ CONCLUÍDO)
+  - lib/oraculo-alerts.ts criado
+  - database/migrate-oraculo-alerts.sql criado
+  - Tipos: quota_warning, quota_exceeded, error_spike, latency_high, api_key_expiring
+  - Severidades: info, warning, error, critical
+  - Funções: createAlert, listAlerts, markAlertAsRead, resolveAlert, checkAndCreateAlerts
+
+- ETAPA 44: EXPORTAÇÃO DE RELATÓRIOS (✅ CONCLUÍDO)
+  - app/admin/analytics-dashboard/export/page.tsx criado
+  - Formatos: CSV, JSON, PDF
+  - Tipos: queries, tokens, instances, billing, full
+  - Filtro por período e instância
+  - Download automático
+
+- Builder.io instalado (@builder.io/react, @builder.io/sdk)
+- app/admin/builder/page.tsx criado (página de configuração)
+- admin-features-registry.ts atualizado com novas páginas
+
+================================================================================
+MUDANÇAS ANTERIORES (01/12/2025 21:45 → 22:40)
+================================================================================
+
+🎉 BLOCO 36-39 CONCLUÍDO!
+
+- ETAPA 39: LOGS DETALHADOS DE USO (✅ CONCLUÍDO)
+  - database/migrate-oraculo-usage-logs.sql criado
+  - lib/oraculo-usage-logs.ts criado
+  - app/api/admin/oraculo-instances/[id]/logs/route.ts criado
+  - Integração na API pública (logging automático)
+  - UI de logs na página de instância
+  - Build passou: 166 páginas
+
+- ETAPA 40: DOCUMENTAÇÃO INTERATIVA DA API (✅ CONCLUÍDO)
+  - app/docs/api/page.tsx criado
+  - Exemplos em JavaScript, Python, cURL, PHP
+  - Playground para testar endpoints
+  - Documentação de webhooks
+  - Build passou: 167 páginas
+
+- ETAPA 41: TESTES AUTOMATIZADOS (✅ CONCLUÍDO)
+  - lib/__tests__/oraculo-instances.test.ts criado
+  - lib/__tests__/oraculo-api-keys.test.ts criado
+  - lib/__tests__/oraculo-billing.test.ts criado
+  - vitest.config.ts e vitest.setup.ts criados
+  - package.json atualizado com scripts de teste
+  - Build passou: 167 páginas
+
+================================================================================
+MUDANÇAS ANTERIORES (01/12/2025 21:00 → 21:45)
+================================================================================
+
+- ETAPA 30: INTEGRAÇÃO GERADOR DE SAAS + QA (✅ CONCLUÍDO)
+  - docs/ORACULO-CORE-SAAS.md criado (guia de integração)
+  - lib/__tests__/oraculo-core.test.ts criado (testes unitários)
+  - Build passou: 163 páginas
+  - 🎉 BLOCO 26-30 CONCLUÍDO!
+
+- ETAPA 31: REFORMA INTELIGENTE DA FRONT PAGE (✅ CONCLUÍDO)
+  - Seção "Para Quem é o Radar" adicionada
+  - 4 cards segmentados: Pessoas, Profissionais, ONGs, Whitelabel
+  - Build passou: 163 páginas
+
+- ETAPA 32-35: INFRAESTRUTURA MULTI-INSTÂNCIA (✅ CONCLUÍDO)
+  - database/migrate-oraculo-instances.sql
+  - lib/oraculo-instances.ts
+  - app/admin/oraculo-instances/page.tsx
+  - app/admin/oraculo-instances/[id]/page.tsx
+  - APIs de instâncias e métricas
+  - Build passou: 166 páginas
+
+- ETAPA 36: SISTEMA DE API KEYS (✅ CONCLUÍDO)
+  - database/migrate-oraculo-api-keys.sql
+  - lib/oraculo-api-keys.ts
+  - app/api/admin/oraculo-instances/[id]/keys/route.ts
+  - Build passou: 166 páginas
+
+- ETAPA 37: SISTEMA DE WEBHOOKS (✅ CONCLUÍDO)
+  - database/migrate-oraculo-webhooks.sql
+  - lib/oraculo-webhooks.ts
+  - app/api/admin/oraculo-instances/[id]/webhooks/route.ts
+  - Build passou: 166 páginas
+
+- ETAPA 38: SISTEMA DE BILLING (✅ CONCLUÍDO)
+  - database/migrate-oraculo-billing.sql
+  - lib/oraculo-billing.ts
+  - app/api/admin/oraculo-instances/[id]/billing/route.ts
+  - Build passou: 166 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 20:30 → 21:00):
+- ETAPA 29: EXPOR ORÁCULO V2 PARA OUTROS PERFIS (✅ CONCLUÍDO)
+  - components/OraculoMultiperfil.tsx criado
+  - components/OraculoHint.tsx criado
+  - Build passou: 163 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 20:00 → 20:30):
+- ETAPA 28: INFRA MULTIPERFIL (✅ CONCLUÍDO)
+  - database/migrate-oraculo-settings.sql criado
+  - lib/oraculo-settings.ts criado (helpers)
+  - /api/oraculo-v2 integrado com verificação de limites
+  - Build passou: 163 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 19:30 → 20:00):
+- ETAPA 27: ORACULO_V2_CORE (✅ CONCLUÍDO)
+  - lib/oraculo-core.ts criado (núcleo reutilizável)
+  - app/api/oraculo-v2/route.ts refatorado para usar o core
+  - docs/ORACULO-CORE.md criado (documentação técnica)
+  - Prompts por perfil: admin, usuaria, profissional, dev, whitelabel
+  - Build passou: 163 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 18:30 → 19:30):
+- ETAPA 26: Template de Resumo + Checklist + Regras (✅ CONCLUÍDO)
+  - docs/FORMATO-RESUMO-ETAPAS.md atualizado (v2.0)
+  - docs/CHECKLIST-RESUMO-IA.md criado
+  - docs/PATCHES-ORACULO-COMPLETO.md criado (unifica todos os patches)
+  - scripts/validar-resumo-ia.ts criado
+  - BLOCO 26-30 INICIADO!
+
+MUDANÇAS ANTERIORES (01/12/2025 18:00 → 18:30):
+- ETAPA 25: QA Técnico + Checklist Pós-MVP (✅ CONCLUÍDO)
+  - CHECKLIST-POS-MVP.md criado na raiz
+  - LÂMPADA-RADAR.txt atualizado com progresso
+  - Build passou: 163 páginas
+  - 🎉 BLOCO 21-25 CONCLUÍDO!
+
+MUDANÇAS ANTERIORES (01/12/2025 17:00 → 18:00):
+- ETAPA 24: Manuais & Links Internos (✅ CONCLUÍDO)
+  - Todos os 5 manuais atualizados com links internos
+  - MANUAL-ADMIN: seção Segurança & Observabilidade
+  - MANUAL-USUARIA: tabela de links rápidos
+  - MANUAL-PROFISSIONAL: links para documentação relacionada
+  - MANUAL-DEV: tabela de APIs principais
+  - MANUAL-WHITELABEL: links para outros manuais
+  - Build passou: 163 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 16:00 → 17:00):
+- ETAPA 23: Segurança Técnica & Observabilidade (✅ CONCLUÍDO)
+  - lib/rate-limit.ts (rate limiting em memória)
+  - lib/logger.ts (logger estruturado JSON)
+  - GET /api/health (healthcheck endpoint)
+  - Rate limiting aplicado em /api/oraculo-v2
+  - Build passou: 163 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 15:00 → 16:00):
+- ETAPA 22: Oráculo V2 Integrado (✅ CONCLUÍDO)
+  - POST /api/oraculo-v2 criado
+  - Tabela oraculo_logs (database/migrate-oraculo-logs.sql)
+  - Componente OraculoButton.tsx
+  - Botão flutuante em /admin e /admin/oraculo
+  - docs/ORACULO-V2-PROMPT.md com system prompt
+  - Manuais atualizados (ADMIN, DEV)
+  - Build passou: 162 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 14:00 → 15:00):
+- ETAPA 21: Billing Sólido & Add-ons (✅ CONCLUÍDO)
+  - Tabela user_addons criada (database/migrate-user-addons.sql)
+  - Webhook Stripe atualizado para processar add-ons
+  - APIs /api/addons e /api/addons/consume criadas
+  - lib/user-addons.ts com funções helper
+  - docs/ENV-VARIABLES.md com mapeamento de variáveis
+  - Build passou: 161 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 13:30 → 14:00):
+- ETAPA 20: Lâmpada Geral (✅ CONCLUÍDO)
+  - LAMPADA-RADAR.txt criado na raiz
+  - 6 seções: Bugs, Confusões, Decisões, Ideias, Dívidas Técnicas, Notas
+  - 3 bugs conhecidos documentados
+  - 5 dívidas técnicas mapeadas
+  - 6 ideias para o futuro
+  - Métricas de saúde do projeto
+
+🎉 BLOCO 14-20 CONCLUÍDO! MVP 1.0 PRONTO!
+
+MUDANÇAS ANTERIORES (01/12/2025 13:00 → 13:30):
+- ETAPA 19: Manuais (✅ CONCLUÍDO)
+  - docs/MANUAL-USUARIA.md - Guia completo para usuárias
+  - docs/MANUAL-PROFISSIONAL.md - Guia para psicólogos/advogados
+  - docs/MANUAL-ADMIN.md - Guia para administradores
+  - docs/MANUAL-DEV.md - Guia para desenvolvedores
+  - docs/MANUAL-WHITELABEL.md - Guia para parceiros white-label
+  - Build passou: 159 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 12:30 → 13:00):
+- ETAPA 18: Limpeza Admin & Mapa do Sistema (✅ CONCLUÍDO)
+  - Oráculo agora é o PRIMEIRO item do menu (defaultOrder: 0)
+  - Curadoria Central logo após (defaultOrder: 2)
+  - Termos Aceitos movido para o final (defaultOrder: 50)
+  - Ícones adicionados ao AdminSidebar: CreditCard, Lightbulb, FileText, Layers, UserPlus, Skull, Network, TrendingUp, MessageCircle
+  - Removida entrada duplicada de termos_aceitos no registry
+  - Build passou: 159 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 12:00 → 12:30):
+- ETAPA 17: Limpeza/Unificação de Dashboards (✅ CONCLUÍDO)
+  - Mapeamento: /dashboard (principal), /dashboard-profissional (profissional)
+  - Legados já redirecionam: /dashboard-v2, /dashboard-premium
+  - Links atualizados em 9 arquivos:
+    * /app, /login, /biblioteca, /espelho, /sala
+    * /chat-premium, /seguranca-premium, /documentos-premium, /configuracoes-premium
+  - Admin agora redireciona para /admin após login
+  - Build passou: 159 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 11:30 → 12:00):
+- ETAPA 16: Oráculo V1 (✅ CONCLUÍDO)
+  - Página /admin/oraculo criada
+  - Responde 7 perguntas-chave do negócio:
+    1. O produto está crescendo?
+    2. As pessoas estão usando?
+    3. Estamos ganhando dinheiro?
+    4. O sistema está saudável?
+    5. Há situações de emergência?
+    6. O que os beta testers estão dizendo?
+    7. O que está acontecendo hoje?
+  - Integração com tabelas: user_profiles, clarity_tests, journal_entries, beta_feedback, beta_events
+  - Links para /admin/analytics, /admin/metricas, /admin/insights
+  - Registrado em admin-features-registry.ts
+  - Build passou: 159 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 11:00 → 11:30):
+- ETAPA 15: Beta com 5 Usuárias (✅ CONCLUÍDO)
+  - Migration 20241201_beta_testers.sql
+    * Campo is_beta_tester, beta_joined_at, beta_group em user_profiles
+    * Tabela beta_feedback para coleta de feedback
+    * Tabela beta_events para observabilidade
+  - API /api/beta/feedback (POST, GET)
+  - API /api/beta/events (POST, GET)
+  - Componente BetaFeedbackWidget (botão flutuante)
+  - Hook useBetaTracking para tracking de eventos
+  - Build passou: 158 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 09:35 → 11:00):
+- ETAPA 14: Loja Simplificada (✅ CONCLUÍDO)
+  - API /api/stripe/addon-checkout (POST)
+    * Checkout de pagamento único para add-ons
+    * Suporta card, boleto, pix
+    * Cria produtos dinâmicos se Price ID não configurado
+    * Metadata com userId, addonId, credits, validityDays
+  - Página /loja/sucesso
+    * Confirmação de compra com detalhes do add-on
+    * Suspense boundary para SSR
+  - Componente AddonsStore atualizado
+    * Integração real com API de checkout
+    * Redirect para login se não autenticado
+  - lib/addons-config.ts
+    * Add-ons "Relatório Completo" e "Kit Segurança" marcados como popular
+    * Campos stripePriceId adicionados
+  - Build passou: 156 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 08:00 → 09:35):
+- CICLO RADAR 5 TXT executado para sincronização
+- Verificação de estrutura de código real vs documentação
+- Preparação para BLOCO 14-20 (Loja, Beta, Oráculo, Limpeza, Manuais, Lâmpada)
+- Nenhuma alteração de código neste ciclo (apenas documentação)
+
+MUDANÇAS ANTERIORES (01/12/2025 03:30 → 08:00):
+- ETAPA 12.3: Exportação em Massa V1 (✅ CONCLUÍDO)
+  - Botão "CSV" na página de relatório do cliente
+  - Exporta dados autorizados (share_*) em formato CSV
+  - Inclui aviso ético no arquivo exportado
+- ETAPA 13: Infra White-label V1 (✅ CONCLUÍDO)
+  - Tabela professional_brand (migration criada)
+  - API /api/professional/brand (GET, POST)
+  - Página /dashboard-profissional/marca
+  - Campos: display_name, brand_color, logo_url, tagline
+  - Preview em tempo real
+- Build passou: 154 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 02:00 → 03:30):
+- ETAPA 12.1.2: Revogação de Acesso pelo Cliente (✅ CONCLUÍDO)
+- ETAPA 12.2: Relatório Básico por Cliente V1 (✅ CONCLUÍDO)
+
+MUDANÇAS ANTERIORES (01/12/2025 01:15 → 02:00):
+- ETAPA 12.1.1: Página de Aceite de Convite (✅ CONCLUÍDO)
+  - Nova rota: /aceitar-convite
+    * Suporta ?codigo=XXXXXXXX na URL
+    * Fluxo para usuário não logado: mostra opções login/cadastro
+    * Fluxo para usuário logado: valida código e mostra permissões
+  - API: /api/professional/invite/validate (POST)
+    * Valida código de convite
+    * Retorna dados do profissional e permissões sugeridas
+  - API: /api/professional/invite/accept (POST)
+    * Aceita convite e define permissões
+    * Atualiza client_id, status='active', share_*
+  - Migration de correção: 20241201_fix_professional_clients_nullable.sql
+    * Torna client_id nullable (necessário para convites pendentes)
+    * Ajusta constraint unique
+    * Adiciona policy para validação pública de códigos
+  - UX/Ética:
+    * Aviso claro: "Radar NÃO substitui terapia/laudo"
+    * Cliente escolhe o que compartilhar
+    * Menção à possibilidade de revogar acesso
+- Build passou: 150 páginas
+
+MUDANÇAS ANTERIORES (01/12/2025 00:45 → 01:15):
+- ETAPA 12.1: Infra de Clientes Profissionais (✅ CONCLUÍDO)
+
+MUDANÇAS ANTERIORES (01/12/2025 00:15 → 00:45):
+- ETAPA 12: Dashboard Profissional V1 (✅ CONCLUÍDO)
+  - Nova rota: /dashboard-profissional
+  - Gating por plano, tela "Área Exclusiva", seções básicas
+
+MUDANÇAS ANTERIORES (30/11/2025 23:55 → 01/12/2025 00:15):
+- ETAPA 11.2: Ajustes finos do dashboard (✅ CONCLUÍDO)
+
+MUDANÇAS ANTERIORES (30/11/2025 23:30 → 23:55):
+- ETAPA 11.1: Dashboard usuária com trilha do herói (✅ CONCLUÍDO)
+  - app/dashboard/page.tsx reorganizado em 5 seções
+  - Timeline horizontal dos 5 passos
+  - Cards de módulos liberados/bloqueados por plano
+  - Componente HeroModuleCard
+
+MUDANÇAS ANTERIORES (30/11/2025 22:10 → 23:30):
+- CICLO RADAR 5 TXT executado para sincronização
+
+MUDANÇAS ANTERIORES (30/11/2025 21:45 → 22:10):
+- ETAPA 11: Redesenho do Dashboard do Usuário - INFRA (✅ CONCLUÍDO)
+  - lib/plan-dashboard-modules.ts atualizado com heroStep e minPlanLevel
+  - lib/dashboard-user-layout.ts criado (buildUserDashboardLayout, getWelcomeMessage, etc.)
+  - Backup do dashboard: app/dashboard/page.BACKUP_ETAPA11.tsx
+  - Trilha do herói: 5 etapas (Entender, Registrar, Conversar, Proteger, Recursos)
+
+MUDANÇAS ANTERIORES (30/11/2025 21:20 → 21:45):
+- ETAPA 10: Infra de Planos, Famílias e Módulos de Dashboard (✅ CONCLUÍDO)
+  - lib/plan-taxonomy.ts (PlanFamily, PLAN_TAXONOMY, funções auxiliares)
+  - lib/plan-dashboard-modules.ts (DashboardModuleId, DASHBOARD_MODULES)
+  - /admin/planos com SemaforoCard amarelo
+
+MUDANÇAS ANTERIORES (30/11/2025 20:50 → 21:20):
+- ETAPA 9: Painel de Curadoria + Semáforo de Edição (✅ CONCLUÍDO)
+  - lib/curadoria-config.ts (get/update config)
+  - /api/admin/curadoria/config (GET/PATCH)
+  - components/admin/EditSemaforoBadge.tsx
+  - /admin/curadoria (painel central)
+  - Semáforo aplicado em 4 páginas admin
+
+MUDANÇAS ANTERIORES (30/11/2025 20:20 → 20:50):
+- ETAPA 8.4: FanPage Viva (✅ CONCLUÍDO)
+  - 5 componentes em components/frontpage/
+  - lib/frontpage-content.ts + API /api/frontpage/content
+  - app/page.tsx integrado com DynamicSections
+
+MUDANÇAS ANTERIORES (30/11/2025 19:50 → 20:20):
+- ETAPA 8.3: Telas Admin de Curadoria (✅ CONCLUÍDO)
+  - 4 páginas criadas: sugestoes, publicados, colecoes, insights
+  - admin-features-registry.ts atualizado
+
+MUDANÇAS ANTERIORES (30/11/2025 17:50 → 19:50):
+- ETAPA 8.1: Schema do Content System (6 tabelas criadas)
+- ETAPA 8.2: 9 APIs Admin + IA Curadora implementadas
+
+MUDANÇAS ANTERIORES (30/11/2025 16:45 → 17:50):
+- ETAPA 7.4: QA Triângulo + Plano de Segurança (todos testes PASS)
+- Preparação para ETAPA 8: FanPage Viva + Camada Comercial
+- Ciclo RADAR 5 TXT executado para sincronização
+
+MUDANÇAS ANTERIORES (30/11/2025 15:20 → 16:45):
+- ETAPA 7.4: QA completo (T1-T5 PASS)
+- Verificação de segurança/RLS em todas APIs
+- Documentação atualizada
+
+MUDANÇAS ANTERIORES (30/11/2025 11:30 → 15:20):
+- ETAPA 7.3: Plano de Segurança integrado ao Triângulo
+- API REST /api/safety-plan criada (GET, POST, PATCH)
+- Card "Plano de Segurança" no Dashboard com status colorido
+- Banner de alerta de risco físico no Dashboard
+- Detecção de risco físico no Chat via regex (PHYSICAL_RISK_REGEX)
+- Banner de alerta no Chat quando risco físico detectado
+- Criação automática de risk_alert via Chat
+- Badge 🛡️ "Plano de Segurança" no Diário e Timeline
+- Tipo 'safety_plan' adicionado ao JournalEntryType
+- risk_alert automático quando hasPhysicalRisk no Teste de Clareza
+- Build passou: 134 páginas
+
+MUDANÇAS ANTERIORES (30/11/2025 09:20 → 11:30):
+- ETAPA 6: Triângulo V2 (Filtros + Mapa no Dashboard)
+- Filtros por entry_type no /diario (clarity_baseline, chat_summary, normal)
+- Filtros por entry_type no /diario/timeline
+- Legenda do Triângulo na Timeline (✨, 💬, 🔥)
+- Card "Estado do Triângulo" no /dashboard com 3 colunas
+- Status "Triângulo Ativo" ou "Incompleto" no Dashboard
+
+MUDANÇAS ANTERIORES (30/11/2025 01:00 → 09:20):
+- ETAPA 2: Triângulo Clareza ⇄ Diário ⇄ Chat implementado
+- ETAPA 3: Diário/Timeline/Dashboard conectados ao triângulo
+- ETAPA 4: Chat → Diário (salvar resumo de sessão)
+- ETAPA 5: Editor Visual da Frontpage (sem código)
+- Badges "Perfil de Clareza", "Intenso" e "Resumo do Chat" no Diário/Timeline
+- Dashboard confirmado consumindo dados reais
+- Tipos JournalEntryType adicionados em types/database.ts
+- Tabela frontpage_config para edição dinâmica da frontpage
+- Hook useFrontpageConfig.ts criado para consumir configs
+- Build passou: 133 páginas (antes 130)
+
+FERRAMENTAS FUTURAS (GUARDADAS NA MEMÓRIA):
+- Dashboard: Tremor (React nativo)
+- Segurança: Arcjet + Supabase RLS
+- Chatbot Frontpage: Crisp ou Tawk.to
+- WhatsApp Bot: Typebot + Z-API
+- Suporte/Helpdesk: Crisp
+
+================================================================================
+[ÍNDICE]
+================================================================================
+1. Visão geral do projeto
+2. Rotas e páginas (app/)
+3. Fluxos principais
+   3.1 Teste de Clareza
+   3.2 Diário
+   3.3 Chat/Coach IA
+   3.4 Dashboard
+   3.5 Editor Visual da Frontpage
+4. Esquema de banco (Supabase)
+5. Planos e monetização
+6. Idiomas (i18n)
+7. Segurança, LGPD e botão de emergência
+8. Diferença entre visão (TUDO PARA O GPT.txt) e código real
+9. Pendências técnicas e riscos
+10. Sistema de Limites por Plano
+11. Sistema de Planos Administráveis
+12. Correções de Acesso Admin
+13. Arquivos de Memória do Projeto
+14. Editor Visual da Frontpage
+15. Triângulo V2 (Filtros + Mapa no Dashboard)
+16. Fluxo de Convite Profissional/Cliente
+
+================================================================================
+[1] VISÃO GERAL DO PROJETO
+================================================================================
+
+STACK TÉCNICA:
+- Framework: Next.js 16.0.3 (App Router)
+- Linguagem: TypeScript 5.x
+- React: 19.2.0
+- Estilização: TailwindCSS 4.0.0
+- Banco de dados: Supabase (PostgreSQL + Auth + Storage)
+- Pagamentos: Stripe 20.0.0
+- IAs: OpenAI 6.9.1 + Groq (via lib/ia-conexoes-reais.ts)
+- PDF: jspdf 3.0.4 + @react-pdf/renderer 4.3.1
+- Gráficos: Recharts 3.5.0
+- Animações: Framer Motion 12.23.24
+
+PASTAS PRINCIPAIS:
+- app/           → Rotas e páginas (App Router do Next.js)
+- lib/           → Lógica de negócio, configs, prompts, utils
+- components/    → Componentes React reutilizáveis
+- hooks/         → Hooks customizados:
+                   - useClarityProfile.ts (perfil de clareza do usuário)
+                   - useFrontpageConfig.ts (configs editáveis da frontpage)
+                   - useI18n.ts (internacionalização)
+                   - usePlanLimits.ts (limites por plano)
+                   - usePlans.ts (lista de planos)
+                   - useUserRole.ts (role do usuário)
+- database/      → Schemas SQL e migrations
+- public/        → Assets estáticos
+- scripts/       → Scripts de build e verificação
+
+ÁREAS PRINCIPAIS DO SISTEMA:
+1. Teste de Clareza (18 perguntas + 1 aberta, 3 eixos, 6 categorias)
+2. Diário de Episódios (registros com tags, anexos, análise IA)
+3. Chat/Coach IA (múltiplas IAs colaborativas)
+4. Dashboard (visão geral, alertas, recomendações)
+5. Planos (Visitante, Guardar, Jornada, Defesa, Profissional)
+6. Admin (painel administrativo completo)
+7. Hub de Problemas (invalidação, gaslighting, etc.)
+8. Plano de Segurança (contatos, documentos, mala de emergência)
+9. Loja de Add-ons (funcionalidades extras)
+10. Blog/Educação (conteúdo sobre abuso narcisista)
+
+================================================================================
+[2] ROTAS E PÁGINAS (app/)
+================================================================================
+
+ROTAS PRINCIPAIS (verificadas no código):
+
+/ (Homepage)
+  Arquivo: app/page.tsx (97KB)
+  Função: Landing page com hero, seções de confiança, "Como Funciona",
+          bloco "Você escolhe como usar", ferramentas, planos, FAQ.
+  Status: IMPLEMENTADA com i18n (PT/EN/ES)
+
+/teste-clareza
+  Arquivo: app/teste-clareza/page.tsx (47KB)
+  Função: Teste de Clareza com 18 perguntas objetivas + 1 aberta.
+          Usa lib/clarity-unified-config.ts para configuração.
+  Status: IMPLEMENTADA
+
+/teste-clareza/resultado
+  Arquivo: app/teste-clareza/resultado/page.tsx
+  Função: Exibe resultado do teste com zonas, eixos, categorias,
+          opção de salvar como "base do Radar" ou apenas visualizar.
+  Status: IMPLEMENTADA
+
+/planos
+  Arquivo: app/planos/page.tsx (15KB)
+  Função: Página de planos com toggle mensal/anual.
+          Usa lib/plans-config.ts para configuração.
+  Status: IMPLEMENTADA
+
+/diario
+  Arquivo: app/diario/page.tsx (17KB)
+  Função: Lista de entradas do diário com filtros e busca.
+  Status: IMPLEMENTADA
+
+/diario/novo
+  Arquivo: app/diario/novo/page.tsx
+  Função: Criar nova entrada no diário com tags, anexos, análise IA.
+  Status: IMPLEMENTADA
+
+/diario/[id]
+  Arquivo: app/diario/[id]/page.tsx
+  Função: Visualizar entrada específica do diário.
+  Status: IMPLEMENTADA
+
+/diario/timeline
+  Arquivo: app/diario/timeline/page.tsx
+  Função: Timeline visual dos episódios registrados.
+  Status: IMPLEMENTADA
+
+/chat
+  Arquivo: app/chat/page.tsx (89KB)
+  Função: Chat com Coach IA de Clareza. Usa múltiplas IAs (OpenAI + Groq).
+          Recebe contexto do perfil de clareza do usuário.
+  Status: IMPLEMENTADA
+
+/dashboard
+  Arquivo: app/dashboard/page.tsx
+  Função: Visão geral do usuário com recomendações e alertas.
+  Status: IMPLEMENTADA
+
+/plano-seguranca
+  Arquivo: app/plano-seguranca/page.tsx
+  Função: Plano de segurança com contatos, documentos, mala de emergência.
+  Status: IMPLEMENTADA
+
+/profissional
+  Arquivo: app/profissional/page.tsx
+  Função: Página para profissionais (terapeutas, advogados).
+  Status: IMPLEMENTADA (com waitlist)
+
+/loja
+  Arquivo: app/loja/page.tsx
+  Função: Loja de add-ons e funcionalidades extras.
+  Status: IMPLEMENTADA
+
+/hub
+  Arquivo: app/hub/page.tsx
+  Função: Hub de problemas (invalidação, gaslighting, etc.).
+  Status: IMPLEMENTADA
+
+/admin/*
+  Arquivos: app/admin/ (37 subpastas)
+  Função: Painel administrativo completo com:
+          - Analytics, métricas, custos IA
+          - Gerenciamento de IAs, fluxos
+          - Beta testers, comunidade
+          - Configurações, estados
+          - Editor de Frontpage (formulários e visual)
+          - Gerenciamento de planos e promoções
+  Status: IMPLEMENTADA
+  
+  Rotas Admin Principais:
+  - /admin/planos → CRUD de planos e promoções
+  - /admin/frontpage-editor → Editor por formulários
+  - /admin/frontpage-visual → Editor visual com preview
+  - /admin/usuarios → Gerenciamento de usuários
+  - /admin/custos-ia → Monitoramento de custos
+  - /admin/fluxos-ia → Fluxos de IA configuráveis
+  - /admin/mapa-ias → Mapa de IAs do sistema
+  - /admin/analytics → Analytics gerais
+
+OUTRAS ROTAS RELEVANTES:
+- /login, /cadastro → Autenticação
+- /configuracoes → Configurações do usuário
+- /privacidade, /termos → Páginas legais
+- /blog → Conteúdo educativo
+- /faq → Perguntas frequentes
+- /contato → Formulário de contato
+- /seguranca, /seguranca-digital → Recursos de segurança
+- /modo-espelho, /espelho → Ferramenta de reflexão
+- /carta-futuro → Cartas para o futuro
+- /termometro → Termômetro emocional
+- /ciclo-abuso, /gaslighting, /love-bombing, /triangulacao → Educação
+
+================================================================================
+[3] FLUXOS PRINCIPAIS
+================================================================================
+
+--------------------------------------------------------------------------------
+[3.1] TESTE DE CLAREZA
+--------------------------------------------------------------------------------
+
+ARQUIVO DE CONFIGURAÇÃO PRINCIPAL:
+lib/clarity-unified-config.ts (21KB)
+
+ESTRUTURA DO TESTE:
+- 18 perguntas objetivas (escala 0-4: Nunca → Quase sempre)
+- 1 pergunta aberta (narrativa do usuário)
+- Pesos diferentes por pergunta (1, 1.5, 2, 2.5, 3)
+
+3 EIXOS PRINCIPAIS:
+1. Névoa Mental (nevoa) - Confusão, gaslighting, dúvida
+2. Medo e Tensão (medo) - Medo de reações, tensão constante
+3. Desrespeito a Limites (limites) - Limites ignorados, isolamento
+
+6 CATEGORIAS DETALHADAS:
+1. Invalidação (3 perguntas) - Eixo: Névoa
+2. Gaslighting (3 perguntas) - Eixo: Névoa
+3. Controle (3 perguntas) - Eixo: Medo
+4. Isolamento (3 perguntas) - Eixo: Limites
+5. Abuso Emocional (3 perguntas) - Eixo: Medo
+6. Risco Físico (3 perguntas) - Eixo: Limites (peso alto)
+
+ZONAS GLOBAIS:
+- Zona de Atenção (0-33%): Sinais leves
+- Zona de Alerta (33-66%): Sinais moderados
+- Zona de Alto Risco (66-100%): Sinais graves
+
+ARQUIVO DE VOZES:
+lib/clarity-questions-voices.ts (11KB)
+- 3 vozes: Científica, Amiga, Direta
+- Cada pergunta tem texto adaptado para cada voz
+
+FLUXO "GUARDAR X VER APENAS":
+- Visitante: Faz teste, vê resultado, não salva
+- Logado: Pode escolher "Guardar como base do Radar"
+- API: app/api/clarity/activate-profile/route.ts
+- Quando salva: is_profile_base = true, gera resumo IA
+
+RESUMO AUTOMÁTICO POR IA:
+- Função: generateAISummary() em activate-profile/route.ts
+- Usa provedores: Groq > OpenAI > Claude > Gemini
+- Gera 3-5 frases empáticas sem diagnóstico
+- Salvo no campo `summary` da tabela clarity_tests
+
+--------------------------------------------------------------------------------
+[3.2] DIÁRIO (UNIFICADO EM 29/11/2025)
+--------------------------------------------------------------------------------
+
+ROTAS OFICIAIS:
+- /diario → Lista de entradas (fonte de verdade dos episódios)
+- /diario/novo → Criar entrada com tags, anexos, análise IA
+- /diario/[id] → Visualizar entrada específica
+- /diario/[id]/editar → Editar entrada específica
+- /diario/timeline → Timeline de Padrões (estatísticas, problemas detectados)
+
+ROTAS ARQUIVADAS (em app/_archive/):
+- /diario-premium → Versão experimental com design premium (ARQUIVADA)
+- /timeline-premium → Duplicata da timeline (ARQUIVADA)
+- /linha-tempo → Timeline de fases do ciclo de abuso (ARQUIVADA - será V2)
+
+REGRA DE OURO:
+"O Diário é a fonte de verdade dos episódios. A Timeline de Padrões só lê/analisa
+o que está em journal_entries + tags + clareza."
+
+TABELA: journal_entries
+- id, user_id, created_at, updated_at, deleted_at
+- title, context (RELACIONAMENTO/FAMILIA/TRABALHO/OUTRO)
+- content, mood_intensity (0-10), highlight, tags[]
+- from_voice (se veio de transcrição)
+- entry_type (normal, clarity_baseline) - NOVO
+- clarity_test_id (referência ao teste) - NOVO
+
+INTEGRAÇÃO COM TESTE DE CLAREZA (ETAPA 2 - TRIÂNGULO):
+- Quando usuário salva teste como base, CRIA entrada automática no diário
+- entry_type = 'clarity_baseline'
+- clarity_test_id = ID do teste
+- Tags sugeridas baseadas nos eixos do teste (gaslighting, medo, controle, etc.)
+- Título: "📊 Radiografia da Relação – [Zona]"
+- Implementado em: app/api/clarity/activate-profile/route.ts
+- NOVO (ETAPA 7.3): Se hasPhysicalRisk = true, cria risk_alert automático
+
+INTEGRAÇÃO COM PLANO DE SEGURANÇA (ETAPA 7.3 - TRIÂNGULO):
+- Quando usuário cria/atualiza Plano de Segurança, CRIA entrada no diário
+- entry_type = 'safety_plan'
+- Tags: ['seguranca', 'plano']
+- Título: "Plano de Segurança criado/atualizado"
+- Implementado em: app/api/safety-plan/route.ts
+
+INTEGRAÇÃO COM CHAT (ETAPA 2 - TRIÂNGULO):
+- Chat recebe contexto dos últimos 3 episódios mais intensos (30 dias)
+- Chat recebe perfil de clareza do usuário
+- Implementado em: app/api/chat/route.ts (getDiaryContextForChat)
+
+INTEGRAÇÃO COM NOVA ENTRADA (ETAPA 2 - TRIÂNGULO):
+- /diario/novo aceita query string: ?from=clarity_result&clarity_test_id=UUID
+- Pré-preenche título, tags, impacto e descrição baseado no perfil de clareza
+- Salva entry_type e clarity_test_id no insert
+- Implementado em: app/diario/novo/page.tsx
+
+ANEXOS:
+- Tabela: journal_attachments
+- Tipos: IMAGE, AUDIO, PDF, VIDEO, OTHER
+- Storage: Supabase Storage
+
+--------------------------------------------------------------------------------
+[3.3] CHAT/COACH IA
+--------------------------------------------------------------------------------
+
+ROTA: /chat
+ARQUIVO: app/chat/page.tsx (89KB)
+
+SISTEMA DE IAs:
+- lib/chat-colaborativo.ts - Sistema de múltiplas IAs
+- lib/ia-conexoes-reais.ts - Conexões com OpenAI e Groq
+- lib/prompts/coachPrompt.ts - Prompt do Coach de Clareza
+
+PROMPT DO COACH:
+- Persona: "Radar Narcisista – Coach de Clareza"
+- Tom: Amigo responsável brasileiro
+- Regras: Responder diretamente, sugerir passos, poucas perguntas
+- Limites: Não é terapia, não faz diagnóstico
+- Protocolo de crise: CVV 188, Polícia 190, Mulher 180
+- Guardrails anti-vingança: Detecta e recusa ajudar com vingança
+- Detecção de fraude: Red flags para relatos inconsistentes
+
+INTEGRAÇÃO COM PERFIL DE CLAREZA:
+- Busca perfil do usuário (is_profile_base = true)
+- Injeta contexto silencioso com:
+  - Zona atual, percentual geral
+  - Scores dos 3 eixos
+  - Alerta de risco físico (se houver)
+  - Resumo gerado pela IA
+- IA usa contexto para personalizar respostas
+
+API: /api/chat
+- Recebe: message, history, userLocation, clarityProfile
+- Detecta problemas no texto (gaslighting, invalidação, etc.)
+- Detecta red flags de fraude/má-fé
+- Retorna: reply, transparencia (IAs usadas, consenso)
+
+API: /api/chat/save-summary (ETAPA 4 - CHAT → DIÁRIO)
+- Recebe: summaryText (obrigatório, min 10 chars), moodIntensity (0-10), tags[]
+- Cria entrada em journal_entries com entry_type = 'chat_summary'
+- Título automático: "💬 Resumo da sessão com o Coach – DD/MM/YYYY"
+- Requer autenticação
+
+DETECÇÃO DE RISCO FÍSICO (ETAPA 7.3 - PLANO DE SEGURANÇA):
+- Regex PHYSICAL_RISK_REGEX detecta frases de risco físico em mensagens
+- Palavras-chave: "me bateu", "me agrediu", "ameaçou", "vai me matar", "medo de morrer", etc.
+- Quando detecta: showPhysicalRiskAlert = true, exibe banner vermelho
+- Cria risk_alert via POST /api/chat com createRiskAlert = true
+- risk_alert salvo com: source='chat', level='HIGH', category='PHYSICAL_VIOLENCE'
+- Banner inclui link para /plano-seguranca
+- Implementado em: app/chat/page.tsx + app/api/chat/route.ts
+
+UI DO CHAT (ETAPA 4 + 7.3):
+- Botão "Salvar no Diário" aparece após 2+ mensagens do usuário
+- Modal de resumo: textarea, slider de intensidade, tags editáveis
+- Modal de encerramento: checkbox para salvar resumo antes de encerrar
+- Badge "Resumo do Chat" (💬) exibido no Diário e Timeline
+- NOVO: Banner de alerta de risco físico (vermelho) quando detectado
+
+--------------------------------------------------------------------------------
+[3.4] DASHBOARD (ETAPA 3 - VISOR DO TRIÂNGULO)
+--------------------------------------------------------------------------------
+
+ROTA: /dashboard
+ARQUIVO: app/dashboard/page.tsx
+
+CONTEÚDO:
+- Resumo do perfil de clareza (se existir) - usa hook useClarityProfile
+- Últimas entradas do diário - lê journal_entries reais
+- Alertas de risco (se houver)
+- Recomendações personalizadas baseadas no perfil
+- Atalhos para ferramentas
+- Estatísticas reais: testes, episódios, mensagens, dias ativos
+- NOVO (ETAPA 7.3): Card "Plano de Segurança" com status colorido
+- NOVO (ETAPA 7.3): Banner de alerta de risco físico
+
+CARD "PLANO DE SEGURANÇA" (ETAPA 7.3):
+- Busca status via GET /api/safety-plan
+- Status: NOT_STARTED (cinza), IN_PROGRESS (amarelo), READY (verde)
+- Ícone Shield, link para /plano-seguranca
+- Mostra contagem de contatos de emergência
+
+BANNER DE RISCO FÍSICO (ETAPA 7.3):
+- Aparece se hasPhysicalRisk = true no perfil de clareza
+- E se safetyPlanStatus !== 'READY'
+- Cor varia: vermelho (NOT_STARTED), amarelo (IN_PROGRESS)
+- Mensagem incentiva completar o Plano de Segurança
+- Link direto para /plano-seguranca
+
+FONTES DE DADOS REAIS:
+- clarity_tests (perfil base)
+- journal_entries (incluindo clarity_baseline, chat_summary, safety_plan)
+- ai_messages (histórico de chat)
+- safety_plans (plano de segurança)
+- risk_alerts (alertas de risco)
+
+VARIANTES:
+- /dashboard-v2 → Versão alternativa
+- /dashboard-premium → Versão para planos pagos
+
+================================================================================
+[4] ESQUEMA DE BANCO (SUPABASE)
+================================================================================
+
+ARQUIVO: database/schema.sql (20KB)
+
+TABELAS PRINCIPAIS:
+
+user_profiles
+- user_id (PK, FK → auth.users)
+- name, role (USER/ADMIN/SUPER_ADMIN)
+- created_at, updated_at
+
+user_settings
+- user_id (PK, FK → auth.users)
+- save_history, save_voice_audio
+- allow_ai_learning_product, allow_ai_dataset_research
+- created_at, updated_at
+
+clarity_tests
+- id (PK), user_id (FK)
+- fog_score, fear_score, limits_score (0-16 cada)
+- global_zone (ATENCAO/ALERTA/VERMELHA)
+- raw_answers (JSONB), summary (TEXT)
+- from_voice (BOOLEAN)
+- NOVOS CAMPOS (migrations pendentes):
+  - is_profile_base (BOOLEAN)
+  - user_narrative (TEXT)
+  - overall_percentage (DECIMAL)
+  - has_physical_risk (BOOLEAN)
+  - test_type (TEXT)
+  - category_scores (JSONB)
+  - axis_scores (JSONB)
+  - ip_hash (TEXT)
+  - completed_at (TIMESTAMPTZ)
+
+journal_entries
+- id (PK), user_id (FK)
+- title, context, content
+- mood_intensity, highlight, tags[]
+- from_voice, deleted_at
+- CAMPOS DE INTEGRAÇÃO (ETAPA 2/3 - TRIÂNGULO):
+  - entry_type (TEXT, default 'normal') - tipos: normal, clarity_baseline, chat_summary
+  - clarity_test_id (UUID, FK → clarity_tests) - referência ao teste de clareza
+  - Migration: database/migrations/20241129_add_diary_clarity_fields.sql
+
+journal_attachments
+- id (PK), journal_entry_id (FK), user_id (FK)
+- type, filename, storage_path
+- description, transcription
+
+ai_chat_sessions
+- id (PK), user_id (FK)
+- name, kind (USER_COACH, AI_STUDIO_*)
+
+ai_messages
+- id (PK), session_id (FK), user_id (FK)
+- role (user/assistant/system/meta)
+- content, from_voice, meta (JSONB)
+
+subscriptions
+- id (PK), user_id (FK)
+- stripe_subscription_id, stripe_customer_id
+- status, price_id, amount, currency
+- current_period_start/end, cancel_at_period_end
+
+safety_plans
+- id (PK), user_id (FK)
+- emergency_contacts (JSONB)
+- important_documents (JSONB)
+- emergency_bag_items (JSONB)
+- safe_place (JSONB)
+- digital_security (JSONB)
+- overall_status, notes
+
+risk_alerts
+- id (PK), user_id (FK)
+- source, source_id, level, category
+- title, description, recommendation
+- is_read, is_dismissed
+
+waitlist (NOVA - migration pendente)
+- id (PK), email, source
+- created_at, notified_at, converted_at
+- metadata (JSONB)
+
+MIGRATIONS PENDENTES (database/migrations/):
+1. 20241129_add_clarity_profile_base.sql
+2. 20241129_add_clarity_extra_fields.sql
+3. 20241129_add_diary_clarity_fields.sql
+4. 20241129_create_waitlist.sql
+
+RLS (Row Level Security):
+- Todas as tabelas têm RLS habilitado
+- Políticas: usuário só vê/edita seus próprios dados
+- Admins têm acesso especial via role
+
+================================================================================
+[5] PLANOS E MONETIZAÇÃO
+================================================================================
+
+ARQUIVO: lib/plans-config.ts (11KB)
+
+5 NÍVEIS DE PLANO:
+
+1. VISITANTE (sem conta)
+   - legacyId: 'visitante'
+   - Preço: Grátis
+   - Limites: 1 teste/mês, 0 diário, 0 chat
+   - Features: Teste 1x, ver resultado na tela
+   - NÃO inclui: PDF, salvar, diário, coach
+
+2. RADAR GUARDAR (gratuito com conta)
+   - legacyId: 'gratuito'
+   - Preço: Grátis
+   - Limites: Testes ilimitados, 3 diário/mês, 5 chat/dia
+   - Features: Salvar resultado, diário básico, coach básico
+   - NÃO inclui: PDF, histórico completo
+
+3. RADAR JORNADA (ex-Essencial)
+   - legacyId: 'essencial'
+   - Preço: R$29,90/mês ou R$299/ano
+   - Limites: Ilimitado diário, 50 chat/dia
+   - Features: Tudo do Guardar + PDF, histórico, análise padrões
+
+4. RADAR DEFESA (ex-Premium)
+   - legacyId: 'premium'
+   - Preço: R$49,90/mês ou R$499/ano
+   - Limites: Ilimitado tudo
+   - Features: Tudo do Jornada + IAs colaborativas, relatórios avançados
+   - popular: true
+
+5. RADAR PROFISSIONAL (futuro)
+   - legacyId: 'profissional'
+   - Preço: R$99,90/mês
+   - comingSoon: true
+   - Para: Terapeutas, advogados
+   - Features: Múltiplos clientes, relatórios profissionais
+
+INTEGRAÇÃO STRIPE:
+- Arquivo: lib/stripe.ts
+- API: app/api/stripe/checkout, webhook, portal
+- Price IDs: via env (STRIPE_PRICE_ESSENCIAL_MENSAL, etc.)
+
+================================================================================
+[6] IDIOMAS (i18n)
+================================================================================
+
+ARQUIVO: lib/i18n.ts (36KB)
+
+IDIOMAS SUPORTADOS:
+- pt-BR (Português Brasileiro) - DEFAULT
+- en (English)
+- es (Español)
+
+ESTRUTURA:
+- translations: Record<Locale, Record<string, string>>
+- frontpageDictionaries: Dicionários estruturados para homepage
+
+PÁGINAS COM i18n IMPLEMENTADO:
+- app/page.tsx (homepage) - PARCIAL
+  - Seções: Hero, Como Funciona, Ferramentas, Planos, Garantias
+  - Bloco "Você escolhe como usar"
+  - Algumas listas ainda hardcoded em PT-BR
+
+PÁGINAS SEM i18n (hardcoded PT-BR):
+- app/teste-clareza/page.tsx
+- app/diario/*.tsx
+- app/chat/page.tsx
+- app/dashboard/page.tsx
+- app/planos/page.tsx
+- Maioria das outras páginas
+
+COMPONENTE SELETOR:
+- components/LanguageSelector.tsx
+- Salva preferência no localStorage
+- Recarrega página ao mudar idioma
+
+================================================================================
+[7] SEGURANÇA, LGPD E BOTÃO DE EMERGÊNCIA
+================================================================================
+
+BOTÃO DE EMERGÊNCIA (ESC):
+- Implementado em: components/EmergencyButton.tsx
+- Atalho: Tecla ESC
+- Ação: Redireciona para site neutro (Google)
+- Presente em: Layout principal, páginas sensíveis
+
+TERMOS E RESPONSABILIDADE:
+- Componente: components/ResponsibilityTermsModal.tsx
+- Modal obrigatório no primeiro uso do chat
+- 6 checkboxes obrigatórios:
+  1. Perspectiva unilateral
+  2. Mentir é crime (Art. 299 CP)
+  3. Forjar provas é crime (Art. 347 CP)
+  4. Calúnia/difamação/injúria são crimes
+  5. Responsabilidade total pelo uso
+  6. Ferramenta de apoio (não substitui profissionais)
+- Registra aceite no banco com timestamp
+
+AVISOS NO FRONTEND:
+- Chat: Microaviso abaixo do input
+- Chat: Aviso periódico a cada 8 mensagens
+- Chat: Modal de confirmação antes de exportar PDF
+- Diário: Microaviso abaixo do campo de descrição
+- Timeline: Aviso completo com ícone
+
+LGPD:
+- Tabela user_settings com preferências de privacidade
+- save_history, save_voice_audio
+- allow_ai_learning_product, allow_ai_dataset_research
+- Rota /configuracoes para gerenciar preferências
+- Rota /privacidade com política de privacidade
+
+EXPORTAR/APAGAR DADOS:
+- Rota /dados-e-ia para visualizar dados
+- Funcionalidade de exportar dados: PARCIALMENTE IMPLEMENTADA
+- Funcionalidade de apagar conta: PARCIALMENTE IMPLEMENTADA
+
+================================================================================
+[8] DIFERENÇA ENTRE VISÃO (TUDO PARA O GPT.txt) E CÓDIGO REAL
+================================================================================
+
+TESTE DE CLAREZA:
+- Visão: 18 perguntas + 1 aberta, 3 eixos, 6 categorias, vozes
+- Código: ✅ IMPLEMENTADO CONFORME VISÃO
+- Diferença: Nenhuma significativa
+
+FLUXO "GUARDAR X VER APENAS":
+- Visão: Escolha clara entre ver e guardar como base
+- Código: ✅ IMPLEMENTADO
+- API activate-profile funcional
+- Resumo IA gerado automaticamente
+
+DIÁRIO:
+- Visão: Integração com teste de clareza, tags sugeridas
+- Código: ✅ IMPLEMENTADO
+- Campos entry_type e clarity_test_id adicionados
+- PENDENTE: Migrations precisam ser executadas no Supabase
+
+CHAT/COACH IA:
+- Visão: Múltiplas IAs, contexto do perfil, detecção de fraude
+- Código: ✅ IMPLEMENTADO
+- Sistema colaborativo OpenAI + Groq
+- Contexto do perfil de clareza injetado
+- Detecção de red flags funcionando
+
+PLANOS:
+- Visão: 5 níveis (Visitante, Guardar, Jornada, Defesa, Profissional)
+- Código: ✅ IMPLEMENTADO
+- Nomes comerciais corretos
+- legacyId mantido para Stripe
+- Profissional marcado como comingSoon
+
+IDIOMAS:
+- Visão: PT/EN/ES em toda a plataforma
+- Código: ⚠️ PARCIALMENTE IMPLEMENTADO
+- Homepage tem i18n
+- Maioria das outras páginas ainda hardcoded PT-BR
+
+RADAR PROFISSIONAL:
+- Visão: Plano B2B para terapeutas/advogados
+- Código: ⚠️ PARCIALMENTE IMPLEMENTADO
+- Página /profissional existe com waitlist
+- Funcionalidades específicas: AINDA NÃO IMPLEMENTADAS
+
+LOJA DE ADD-ONS:
+- Visão: Funcionalidades extras para compra avulsa
+- Código: ⚠️ PARCIALMENTE IMPLEMENTADO
+- Página /loja existe
+- Integração com pagamento: AINDA NÃO IMPLEMENTADA
+
+TRILHAS/CURSOS:
+- Visão: Conteúdo educativo personalizado
+- Código: ⚠️ PARCIALMENTE IMPLEMENTADO
+- Página /cursos existe
+- Personalização baseada no teste: AINDA NÃO IMPLEMENTADA
+
+================================================================================
+[9] PENDÊNCIAS TÉCNICAS E RISCOS
+================================================================================
+
+MIGRATIONS PENDENTES (CRÍTICO):
+Os seguintes arquivos SQL existem mas podem não ter sido executados:
+1. database/migrations/20241129_add_clarity_profile_base.sql
+   - Adiciona: is_profile_base, user_narrative, overall_percentage, etc.
+2. database/migrations/20241129_add_clarity_extra_fields.sql
+   - Adiciona: category_scores, axis_scores, ip_hash, summary, completed_at
+3. database/migrations/20241129_add_diary_clarity_fields.sql
+   - Adiciona: entry_type, clarity_test_id em journal_entries
+4. database/migrations/20241129_create_waitlist.sql
+   - Cria tabela waitlist com RLS
+
+RISCO: Se as migrations não forem executadas, o código que usa esses campos
+vai falhar silenciosamente ou com erro.
+
+ARQUIVOS DE BACKUP:
+- Movidos para app/_archive/teste-clareza/
+- page-old.tsx, page-old-backup.tsx
+- resultado/page-old.tsx, resultado/page-old-backup.tsx
+- NÃO estão sendo importados em nenhum lugar
+
+PONTOS FRÁGEIS:
+1. Chat depende de campos que podem não existir (is_profile_base)
+2. Diário novo tenta usar entry_type que pode não existir
+3. i18n incompleto pode causar textos misturados PT/EN
+
+VARIÁVEIS DE AMBIENTE NECESSÁRIAS:
+- NÃO CONSIGO VER O CONTEÚDO DO .env.local
+- Necessárias: SUPABASE_URL, SUPABASE_ANON_KEY, OPENAI_API_KEY,
+  GROQ_API_KEY, STRIPE_SECRET_KEY, STRIPE_PRICE_*, etc.
+
+DUPLICAÇÕES:
+- lib/clarity-test-config.ts vs lib/clarityTestConfig.ts (legado)
+- lib/clarity-index.ts vs lib/clarityIndex.ts (legado)
+- Recomendação: Remover arquivos legados após confirmar não uso
+
+TESTES AUTOMATIZADOS:
+- Pasta __tests__/ existe com 2 itens
+- Cobertura: NÃO CONSIGO CONFIRMAR EXTENSÃO
+- jest.config.js configurado
+
+================================================================================
+[10] IMPLEMENTAÇÕES RECENTES (29/11/2025 19:00)
+================================================================================
+
+GATE DE LOGIN NO RESULTADO DO TESTE:
+- Arquivo: app/teste-clareza/resultado/page.tsx
+- Comportamento: Usuário faz teste → resultado fica bloqueado
+- Se não logado → mostra tela de criar conta/login
+- Preview borrado do resultado com cadeado
+- Após autenticar → mostra resultado completo
+- Commit: 29c60fd
+
+VERIFICAÇÃO DE LIMITES POR PLANO:
+- Arquivos modificados:
+  - app/chat/page.tsx
+  - app/diario/novo/page.tsx
+- Hook usado: usePlanLimits() de hooks/usePlanLimits.ts
+- Comportamento:
+  - Chat: verifica canSendMessage antes de enviar
+  - Diário: verifica canCreateEntry antes de criar
+  - Modal de limite atingido com:
+    - Mensagem clara sobre o limite
+    - Opção de aguardar reset
+    - Botão para ver planos (upgrade)
+- Commit: f724b60
+
+DOCUMENTAÇÃO:
+- Criado: docs/RADAR-IMPLEMENTACOES.md
+- Contém: Status completo de cada etapa do MVP
+- Commit: 8968c88
+
+================================================================================
+[14] EDITOR VISUAL DA FRONTPAGE (30/11/2025)
+================================================================================
+
+CONCEITO:
+Sistema para editar textos e seções da frontpage sem código.
+Alternativa ao WordPress/Elementor, integrado ao Next.js.
+
+NOVA TABELA (migration: 007_frontpage_config.sql):
+- frontpage_config: Configurações editáveis da frontpage
+  - config_key: Identificador único (hero, faq, testimonials, etc.)
+  - config_value: JSONB com os dados da seção
+  - is_active: Ativar/desativar seção
+  - RLS: Leitura pública, escrita apenas admins
+
+NOVOS ARQUIVOS:
+- database/migrations/007_frontpage_config.sql: Schema + seed
+- app/api/admin/frontpage-editor/route.ts: API CRUD
+- app/admin/frontpage-editor/page.tsx: Editor por formulários
+- app/admin/frontpage-visual/page.tsx: Editor visual com preview
+- hooks/useFrontpageConfig.ts: Hook para consumir configs
+
+SEÇÕES EDITÁVEIS:
+| config_key    | Descrição                    |
+|---------------|------------------------------|
+| general       | Nome do site, banner promo   |
+| hero          | Título, subtítulo, CTAs      |
+| stats         | Estatísticas numéricas       |
+| faq           | Perguntas frequentes         |
+| testimonials  | Depoimentos de usuárias      |
+| cta_final     | Call-to-action final         |
+| sections_order| Ordem e visibilidade         |
+
+FUNCIONALIDADES:
+✅ Editor por formulários (/admin/frontpage-editor)
+✅ Editor visual com preview em tempo real (/admin/frontpage-visual)
+✅ Preview responsivo (desktop/tablet/mobile)
+✅ Ativar/desativar seções
+✅ Adicionar/remover itens de FAQ e depoimentos
+✅ Salvar no Supabase
+✅ Fallback para valores padrão se tabela não existir
+
+NOTA SOBRE BUILDER.IO:
+- Tentativa de instalar Builder.io falhou
+- Requer Visual Studio C++ no Windows (node-gyp)
+- Solução: Editor visual próprio criado
+
+PRÓXIMO PASSO:
+- Rodar migration 007 no Supabase
+- Conectar frontpage real ao hook useFrontpageConfig
+
+================================================================================
+[15] TRIÂNGULO V2 – FILTROS + MAPA NO DASHBOARD (30/11/2025 11:30)
+================================================================================
+
+ETAPA 6 IMPLEMENTADA:
+
+OBJETIVO:
+Deixar o Triângulo CLAREZA ⇄ DIÁRIO ⇄ CHAT visível, filtrável e fácil de entender.
+
+IMPLEMENTAÇÕES:
+
+1. FILTROS NO /diario (app/diario/page.tsx):
+   - Novo estado: entryTypeFilter ('all' | 'clarity_baseline' | 'chat_summary' | 'normal')
+   - Painel de filtros no topo: "Tipo de entrada"
+   - Botões: Todos, Perfil de Clareza, Resumo do Chat, Episódios Normais
+   - Mensagens amigáveis quando filtro não retorna resultados
+
+2. FILTROS + LEGENDA NO /diario/timeline (app/diario/timeline/page.tsx):
+   - Mesmo filtro por entry_type
+   - Legenda visual do Triângulo:
+     ✨ Perfil de Clareza (clarity_baseline)
+     💬 Resumo do Chat (chat_summary)
+     🔥 Intenso (mood_intensity >= 7)
+
+3. CARD "ESTADO DO TRIÂNGULO" NO /dashboard (app/dashboard/page.tsx):
+   - Novo estado: triangleState com dados dos 3 lados
+   - Card com 3 colunas: Clareza / Diário / Chat
+   - Dados mostrados:
+     - Clareza: Perfil base salvo? + data do último
+     - Diário: Episódios nos últimos 30 dias + intensos
+     - Chat: Resumos nos últimos 30 dias + data do último
+   - Status geral:
+     - "✅ Triângulo Ativo" se os 3 lados têm dados
+     - "⚠️ Incompleto" se falta algum lado
+   - Mensagem explicativa do que falta
+
+PENDENTE-V2 (NÃO IMPLEMENTADO):
+- Auto-resumo IA no Chat (geração automática de resumo)
+
+================================================================================
+[16] ETAPA 7.3 – PLANO DE SEGURANÇA INTEGRADO AO TRIÂNGULO (30/11/2025 15:20)
+================================================================================
+
+OBJETIVO:
+Integrar o módulo "Plano de Segurança" com o Triângulo de Risco (Clareza ⇄ Diário ⇄ Chat).
+
+IMPLEMENTAÇÕES CONCLUÍDAS:
+
+1. API REST /api/safety-plan:
+   - GET: Retorna plano do usuário + status calculado
+   - POST: Cria novo plano + entrada no diário (entry_type='safety_plan')
+   - PATCH: Atualiza plano + entrada no diário
+   - Status: NOT_STARTED | IN_PROGRESS | READY
+   - Arquivo: app/api/safety-plan/route.ts
+
+2. DASHBOARD - Card "Plano de Segurança":
+   - Busca status via API
+   - Cores por status: cinza (NOT_STARTED), amarelo (IN_PROGRESS), verde (READY)
+   - Ícone Shield, link para /plano-seguranca
+   - Arquivo: app/dashboard/page.tsx
+
+3. DASHBOARD - Banner de Risco Físico:
+   - Aparece se hasPhysicalRisk = true E plano não está READY
+   - Cor varia conforme status do plano
+   - Mensagem incentiva completar o plano
+   - Arquivo: app/dashboard/page.tsx
+
+4. CHAT - Detecção de Risco Físico:
+   - Regex PHYSICAL_RISK_REGEX detecta frases de risco
+   - Banner vermelho quando detectado
+   - Cria risk_alert automático via API
+   - Arquivo: app/chat/page.tsx + app/api/chat/route.ts
+
+5. DIÁRIO - Badge "Plano de Segurança":
+   - Badge 🛡️ para entradas com entry_type='safety_plan'
+   - Estilo vermelho para destaque
+   - Arquivos: app/diario/page.tsx + app/diario/timeline/page.tsx
+
+6. TESTE DE CLAREZA - risk_alert automático:
+   - Quando hasPhysicalRisk = true ao salvar perfil base
+   - Cria risk_alert com category='PHYSICAL_VIOLENCE'
+   - Arquivo: app/api/clarity/activate-profile/route.ts
+
+7. TIPOS ATUALIZADOS:
+   - JournalEntryType += 'safety_plan'
+   - Arquivo: types/database.ts
+
+TABELAS UTILIZADAS:
+- safety_plans (já existia)
+- risk_alerts (já existia)
+- journal_entries (campo entry_type)
+- clarity_tests (campo has_physical_risk)
+
+================================================================================
+[17] ETAPA 8 – FANPAGE VIVA + CAMADA COMERCIAL (EM ANDAMENTO)
+================================================================================
+
+STATUS: PARCIALMENTE IMPLEMENTADO (ETAPA 8.1 + 8.2 CONCLUÍDAS)
+
+OBJETIVO:
+Transformar a frontpage em um organismo vivo que:
+- Absorve sinais do núcleo interno (Clareza, Diário, Chat, Plano de Segurança)
+- Absorve sinais do mundo externo (notícias, estudos, podcasts)
+- Tudo passa pelo filtro do Eduardo (admin) antes de publicar
+- IAs como equipe editorial, Eduardo como editor-chefe
+
+================================================================================
+ETAPA 8.1 – SCHEMA DO CONTENT SYSTEM (✅ CONCLUÍDO 30/11/2025 18:25)
+================================================================================
+
+MIGRATION: database/migrations/20241130_create_content_system.sql
+
+TABELAS CRIADAS:
+1. content_sources - Fontes externas confiáveis (blogs, podcasts, etc.)
+2. content_items - Conteúdos publicados (artigos, FAQs, notícias, lições)
+3. content_suggestions - Sugestões de conteúdo (IA + manual)
+4. content_collections - Trilhas/coleções (Radar Academy)
+5. content_collection_items - Ponte N:N coleção ↔ conteúdo
+6. content_insights - Métricas agregadas (Radar em Números)
+
+RLS CONFIGURADO:
+- Leitura pública apenas para visibility='public'
+- Escrita apenas para admins autenticados
+
+SEED DATA:
+- 6 métricas iniciais em content_insights
+- 3 FAQs iniciais em content_items
+
+================================================================================
+ETAPA 8.2 – APIS ADMIN + IA CURADORA (✅ CONCLUÍDO 30/11/2025 19:15)
+================================================================================
+
+PADRÃO DE ADMIN:
+- Usa requireAdminAPI() de lib/admin-auth.ts
+- Emails admin: etailoffice@gmail.com, eduardo.mkt.davila@gmail.com
+- Roles: ADMIN ou SUPER_ADMIN em user_profiles.role
+
+APIS CRIADAS (9 endpoints):
+
+1. /api/admin/content/items (GET, POST)
+   - Lista com filtros: visibility, content_type, source_type, search, topics, featured
+   - Cria novo content_item
+   - Arquivo: app/api/admin/content/items/route.ts
+
+2. /api/admin/content/items/[id] (GET, PATCH, DELETE)
+   - Detalhe, atualização, arquivamento (soft delete)
+   - Arquivo: app/api/admin/content/items/[id]/route.ts
+
+3. /api/admin/content/suggestions (GET, POST)
+   - Lista com filtros: status, suggestion_source, priority, search
+   - Cria sugestão manual
+   - Arquivo: app/api/admin/content/suggestions/route.ts
+
+4. /api/admin/content/suggestions/[id] (GET, PATCH, DELETE)
+   - Detalhe, atualização, remoção
+   - PATCH com publish_now=true cria content_item automaticamente
+   - Arquivo: app/api/admin/content/suggestions/[id]/route.ts
+
+5. /api/admin/content/collections (GET, POST)
+   - Lista com filtros: visibility, collection_type, featured, premium
+   - Cria nova coleção
+   - Arquivo: app/api/admin/content/collections/route.ts
+
+6. /api/admin/content/collections/[id] (GET, PATCH, DELETE)
+   - Detalhe, atualização, arquivamento
+   - Arquivo: app/api/admin/content/collections/[id]/route.ts
+
+7. /api/admin/content/collections/[id]/items (GET, POST, PATCH, DELETE)
+   - Gerencia itens dentro de uma coleção
+   - Arquivo: app/api/admin/content/collections/[id]/items/route.ts
+
+8. /api/admin/content/insights/recompute (GET, POST)
+   - GET: Status das métricas atuais
+   - POST: Recalcula todas as métricas
+   - Arquivo: app/api/admin/content/insights/recompute/route.ts
+
+9. /api/admin/content/curadoria/ia-sugerir (POST)
+   - Recebe raw_text ou original_url + source_type
+   - Usa Groq (fallback OpenAI) para gerar sugestão
+   - Cria registro em content_suggestions com status='pending'
+   - Arquivo: app/api/admin/content/curadoria/ia-sugerir/route.ts
+
+LIB AUXILIAR:
+- lib/content-insights.ts
+  - recomputeContentInsights(): Calcula 7 métricas
+  - getPublicInsights(): Busca métricas públicas
+
+MÉTRICAS CALCULADAS:
+| Métrica                        | Categoria   | Visibilidade |
+|--------------------------------|-------------|--------------|
+| total_users                    | general     | public       |
+| tests_completed_30d            | engagement  | public       |
+| diary_entries_30d              | engagement  | public       |
+| chat_sessions_30d              | engagement  | public       |
+| safety_plans_created           | safety      | public       |
+| risk_alerts_30d                | safety      | admin_only   |
+| percent_users_physical_risk_high | safety    | admin_only   |
+
+IA CURADORA:
+- Usa chatGroq e chatOpenAI de lib/ia-conexoes-reais.ts
+- Prompt ético em PT-BR com regras:
+  - NÃO romantizar abuso
+  - NÃO usar linguagem sensacionalista
+  - NÃO fazer diagnósticos clínicos
+  - NÃO sugerir vingança
+  - SEMPRE focar em educação e proteção
+- Gera: título, resumo, tipo, tags, relevância (0-1), riscos/gatilhos
+- Salva em content_suggestions com suggestion_source='ai_curator'
+
+================================================================================
+ETAPA 8.3 – TELAS ADMIN DE CURADORIA (✅ CONCLUÍDO 30/11/2025 20:15)
+================================================================================
+
+PÁGINAS CRIADAS:
+- [x] /admin/conteudos/sugestoes - Gerenciar sugestões da IA Curadora
+- [x] /admin/conteudos/publicados - Gerenciar conteúdos publicados
+- [x] /admin/conteudos/colecoes - Gerenciar coleções/trilhas (Radar Academy)
+- [x] /admin/conteudos/insights - Visualizar e recalcular métricas (Radar em Números)
+
+ARQUIVOS CRIADOS:
+- app/admin/conteudos/sugestoes/page.tsx
+- app/admin/conteudos/publicados/page.tsx
+- app/admin/conteudos/colecoes/page.tsx
+- app/admin/conteudos/insights/page.tsx
+
+REGISTRO ADMIN ATUALIZADO:
+- app/admin/admin-features-registry.ts
+  - Adicionados 4 novos IDs: conteudos_sugestoes, conteudos_publicados, conteudos_colecoes, conteudos_insights
+  - Grupo: Dados
+  - Ordem: 25-28
+
+FUNCIONALIDADES POR PÁGINA:
+
+1. /admin/conteudos/sugestoes:
+   - Lista sugestões com filtros (status, fonte, busca)
+   - Painel de detalhes com ações (aprovar, publicar, rejeitar)
+   - Modal IA Curadora para analisar novos conteúdos
+   - Integração com /api/admin/content/suggestions
+
+2. /admin/conteudos/publicados:
+   - Tabela de conteúdos com filtros (visibilidade, tipo, busca)
+   - Modal de edição com campos: título, resumo, corpo (Markdown), tags
+   - Criar novo conteúdo
+   - Arquivar conteúdo (soft delete)
+   - Integração com /api/admin/content/items
+
+3. /admin/conteudos/colecoes:
+   - Lista de coleções com seleção
+   - Painel de detalhes com itens da coleção
+   - Adicionar/remover itens
+   - Criar/editar coleções
+   - Integração com /api/admin/content/collections
+
+4. /admin/conteudos/insights:
+   - Cards de métricas públicas e admin-only
+   - Botão "Recalcular Métricas"
+   - Formatação de valores (K, M, %)
+   - Timestamp de última atualização
+   - Integração com /api/admin/content/insights/recompute
+
+BUILD: 143 páginas (antes 139)
+
+================================================================================
+ETAPA 8.4 – BLOCOS DINÂMICOS NA FRONTPAGE (✅ CONCLUÍDO 30/11/2025 20:45)
+================================================================================
+
+SEÇÕES ESTÁTICAS (já existiam):
+- [x] Hero com CTAs comerciais
+- [x] Planos e Preços (integrado com billing_plans)
+- [x] Seção Inclusiva (Homens e Mulheres)
+- [x] Checklist de Reconhecimento
+- [x] O que é Abuso Narcisista
+- [x] Para Quem é o Radar
+- [x] Ciclo do Relacionamento
+- [x] Mitos vs Realidade
+- [x] Aprenda Mais
+- [x] CTA Final + Footer
+
+SEÇÕES DINÂMICAS (ETAPA 8.4):
+- [x] Radar em Números (content_insights via API)
+- [x] FAQ Dinâmico (content_items type='faq')
+- [x] Radar no Mundo (content_items source_type='external_*')
+- [x] Radar Academy (content_collections)
+
+ARQUIVOS CRIADOS:
+- lib/frontpage-content.ts
+  - getPublicInsights()
+  - getPublicFaqItems()
+  - getWorldNewsItems()
+  - getAcademyCollections()
+  - getFrontpageContent()
+
+- app/api/frontpage/content/route.ts
+  - GET: Retorna todos os dados dinâmicos
+  - Cache: 5 minutos
+
+- components/frontpage/
+  - RadarEmNumerosSection.tsx
+  - FaqDinamicoSection.tsx
+  - RadarNoMundoSection.tsx
+  - RadarAcademySection.tsx
+  - DynamicSections.tsx (wrapper)
+
+INTEGRAÇÃO:
+- app/page.tsx importa DynamicSections
+- Seções inseridas após Planos, antes de Seção Inclusiva
+- Se não houver dados no banco, seções não aparecem
+
+================================================================================
+[16] FLUXO DE CONVITE PROFISSIONAL/CLIENTE
+================================================================================
+
+ETAPA 12.1 + 12.1.1 + 12.1.2 + 12.2 - Sistema Completo de Clientes Profissionais
+
+TABELA: professional_clients
+- id (UUID)
+- professional_id (UUID → auth.users)
+- client_id (UUID → auth.users, NULLABLE até aceite)
+- status: 'pending' | 'active' | 'paused' | 'revoked'
+- invite_code (TEXT UNIQUE, 8 caracteres)
+- share_clarity_tests, share_journal_entries, share_chat_summaries (BOOLEAN)
+- share_safety_plan, share_risk_alerts (BOOLEAN, sensíveis)
+- client_display_name, professional_notes (TEXT)
+- invite_sent_at, invite_accepted_at, last_activity_at (TIMESTAMPTZ)
+
+FLUXO COMPLETO:
+1. Profissional acessa /dashboard-profissional
+2. Clica "Convidar Cliente" → API POST /api/professional/clients
+3. Sistema gera invite_code único (ex: "A1B2C3D4")
+4. Profissional envia código para cliente (manual por enquanto)
+5. Cliente acessa /aceitar-convite ou /aceitar-convite?codigo=XXXXXXXX
+6. Se não logado: mostra opções login/cadastro com redirect
+7. Se logado: valida código via POST /api/professional/invite/validate
+8. Cliente escolhe permissões (share_*) e confirma
+9. API POST /api/professional/invite/accept atualiza:
+   - client_id = usuário logado
+   - status = 'active'
+   - share_* conforme escolhas
+10. Profissional vê cliente ativo no dashboard
+11. Profissional clica "Relatório" → /dashboard-profissional/clientes/[id]
+12. Cliente pode gerenciar em /configuracoes/profissionais
+
+ROTAS DO PROFISSIONAL:
+- /dashboard-profissional (lista de clientes)
+- /dashboard-profissional/clientes/[id] (relatório por cliente)
+- /api/professional/clients (GET, POST)
+- /api/professional/clients/[id] (GET, PATCH, DELETE)
+- /api/professional/invite/validate (POST)
+- /api/professional/invite/accept (POST)
+- /api/professional/reports/[clientId] (GET - relatório agregado)
+
+ROTAS DO CLIENTE:
+- /aceitar-convite (aceitar convite)
+- /configuracoes/profissionais (gerenciar conexões)
+- /api/client/connections (GET - listar conexões)
+- /api/client/connections/[id] (PATCH - revogar/pausar/retomar/editar)
+
+MIGRATIONS:
+- 20241201_create_professional_clients.sql (tabela principal)
+- 20241201_fix_professional_clients_nullable.sql (correção client_id)
+
+RLS POLICIES:
+- Profissional vê/edita seus clientes
+- Cliente vê/edita suas conexões
+- Convites pendentes podem ser validados publicamente (só código)
+
+LGPD/ÉTICA:
+- Cliente escolhe explicitamente o que compartilhar
+- Aviso claro: "Radar NÃO substitui terapia/laudo"
+- Cliente pode revogar acesso a qualquer momento
+- Cliente pode pausar/retomar acesso
+- Cliente pode editar permissões (share_*) individualmente
+
+RELATÓRIO DO PROFISSIONAL (V1):
+- Resumo do cliente (nome, data conexão, última atividade)
+- Módulos baseados em share_*:
+  - Clareza: total testes, última zona, evolução
+  - Diário: total entradas, entradas/semana, intensidade média
+  - Chat: total sessões, sessões recentes
+  - Segurança: plano existe? status
+  - Alertas: total, não resolvidos, recentes
+- Botão "Imprimir / PDF" via print do navegador
+- Botão "CSV" para exportação de dados (ETAPA 12.3)
+- Aviso ético no topo
+
+================================================================================
+[17] INFRA WHITE-LABEL PROFISSIONAL (V1)
+================================================================================
+
+ETAPA 13 - Personalização de Marca para Profissionais
+
+TABELA: professional_brand
+- id (UUID)
+- professional_id (UUID → auth.users, UNIQUE)
+- display_name (TEXT) - Nome público do profissional/clínica
+- brand_color (TEXT) - Cor principal em hex (#RRGGBB)
+- logo_url (TEXT) - URL do logo
+- tagline (TEXT) - Especialidade/slogan
+- show_radar_branding (BOOLEAN) - Mostrar "Powered by Radar"
+- created_at, updated_at (TIMESTAMPTZ)
+
+ROTAS:
+- /dashboard-profissional/marca (configuração de marca)
+- /api/professional/brand (GET, POST)
+
+FUNCIONALIDADES V1:
+- Profissional configura nome público
+- Escolhe cor principal (predefinidas ou custom)
+- Adiciona tagline/especialidade
+- Cola URL de logo (upload será V2)
+- Preview em tempo real
+- Toggle "Powered by Radar Narcisista"
+
+RLS:
+- Profissional só vê/edita sua própria marca
+- Clientes podem ver marca do profissional conectado
+
+PENDENTE (V2):
+- Upload de logo direto
+- Domínio/URL personalizada
+- Temas completos (cores secundárias, fontes)
+- Aplicar marca no convite e relatório
+
+MIGRATION:
+- 20241201_create_professional_brand.sql
+
+================================================================================
+[18] PRÓXIMAS ETAPAS PLANEJADAS (BLOCO 14-20)
+================================================================================
+
+ESTADO ATUAL: ETAPAS 1-13 CONCLUÍDAS
+
+PRÓXIMAS ETAPAS (NÃO INICIADAS):
+
+- ETAPA 14: Loja Simplificada (2-3 add-ons reais)
+  - Planned no TUDO PARA O GPT, mas NÃO ENCONTREI IMPLEMENTAÇÃO COMPLETA no código
+  - Página /loja existe (app/loja/page.tsx - 7KB)
+  - Integração com Stripe para add-ons: AINDA NÃO IMPLEMENTADA
+  - lib/addons-config.ts existe (11KB) - configuração de add-ons
+
+- ETAPA 15: Beta com 5 Usuárias
+  - Página /admin/beta-testers existe
+  - Infra de observabilidade: PARCIALMENTE IMPLEMENTADA
+  - Coleta de feedback: AINDA NÃO IMPLEMENTADA
+
+- ETAPA 16: Oráculo V1 (Analytics Consolidado)
+  - /admin/analytics existe
+  - /admin/metricas existe
+  - /admin/insights existe
+  - Consolidação em visão única: AINDA NÃO IMPLEMENTADA
+
+- ETAPA 17: Limpeza/Unificação de Dashboards
+  - /dashboard (principal usuária - com trilha do herói)
+  - /dashboard-premium (versão premium)
+  - /dashboard-v2 (versão alternativa)
+  - /dashboard-profissional (profissionais)
+  - Unificação: AINDA NÃO IMPLEMENTADA
+
+- ETAPA 18: Limpeza Admin & Mapa do Sistema
+  - /admin/mapa-sistema existe
+  - /admin/mapa-ias existe
+  - Organização de menus: PARCIALMENTE IMPLEMENTADA
+
+- ETAPA 19: Manuais (Usuária, Profissional, Admin, Dev, White-label)
+  - Pasta docs/ existe mas está vazia ou com poucos arquivos
+  - Manuais estruturados: AINDA NÃO IMPLEMENTADOS
+
+- ETAPA 20: Lâmpada Geral (Observações e Pendências)
+  - Arquivo LAMPADA-RADAR.txt: AINDA NÃO EXISTE
+  - Rota /admin/lampada: AINDA NÃO EXISTE
+
+================================================================================
+FIM DO ATLAS – 20 SEÇÕES
+================================================================================
+
+Gerado em: 29/11/2025 18:10 (UTC-5)
+Atualizado em: 01/12/2025 09:35 (UTC-5)
+Tamanho aproximado: ~55KB
+Seções: 20
+
+NOTA IMPORTANTE:
+Este documento reflete o estado do CÓDIGO no momento da geração.
+O estado real do banco de dados Supabase NÃO PODE SER CONFIRMADO
+a partir do código. As migrations listadas como "pendentes" podem
+já ter sido executadas manualmente.
+
+MIGRATIONS PENDENTES:
+- 007_frontpage_config.sql
+- 20241130_create_content_system.sql
+- 20241201_create_professional_clients.sql (ETAPA 12.1)
+- 20241201_fix_professional_clients_nullable.sql (ETAPA 12.1.1)
+- 20241201_create_professional_brand.sql (ETAPA 13)
+
+Para confirmar o estado do banco:
+1. Acessar Supabase Dashboard
+2. Verificar se as tabelas/colunas existem
+3. Executar migrations pendentes se necessário
+================================================================================

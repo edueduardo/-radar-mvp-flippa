@@ -1,0 +1,909 @@
+================================================================================
+RADAR NARCISISTA – CHECKLIST DE TESTES
+================================================================================
+Versão: 4.5
+Última atualização: 03/12/2025 11:15 (UTC-5)
+
+================================================================================
+FLUXO 1 – TESTE DE CLAREZA
+================================================================================
+
+☐ Consigo responder as 18+1 perguntas sem erro
+☐ Vejo o resultado com zona global + eixos + categorias
+☐ A opção "Guardar como base" funciona sem erro
+☐ Depois de guardar, o Dashboard mostra recomendações baseadas nesse teste
+☐ Posso refazer o teste e ver histórico
+
+================================================================================
+FLUXO 2 – DIÁRIO
+================================================================================
+
+☐ Consigo criar um diário normal (sem teste)
+☐ Consigo criar um diário vinculado à base de clareza
+☐ O diário aparece na timeline em ordem correta
+☐ Se faço login/logout, os diários continuam lá
+☐ Posso editar um diário existente
+☐ Posso excluir um diário
+☐ A análise de IA funciona no diário
+
+================================================================================
+FLUXO 3 – CHAT / COACH IA
+================================================================================
+
+☐ Consigo abrir o chat logado
+☐ A IA fala como "Radar Narcisista", não genérico
+☐ A IA usa contexto do teste (zona, risco) na resposta
+☐ A IA usa contexto do diário recente
+☐ Limite de mensagens por plano funciona
+☐ Mensagem de limite atingido aparece corretamente
+☐ Botão "Salvar no Diário" aparece após 2+ mensagens
+☐ Modal de resumo permite editar texto, intensidade e tags
+☐ Resumo salvo aparece no Diário com badge "Resumo do Chat"
+☐ Modal de encerramento oferece opção de salvar resumo
+
+================================================================================
+FLUXO 4 – FRONTPAGE / PLANOS
+================================================================================
+
+☐ Homepage abre sem erro em aba anônima
+☐ As seções principais aparecem (hero, ferramentas, planos, FAQ)
+☐ Botão de cada plano leva para onde deveria
+☐ Planos são carregados do banco (ou fallback funciona)
+☐ Promoções ativas aparecem com labels
+☐ Preço original riscado aparece quando há promoção
+
+================================================================================
+FLUXO 5 – ADMIN / PLANOS
+================================================================================
+
+☐ Consigo acessar /admin/planos como admin
+☐ Vejo lista de todos os planos (B2C e B2B)
+☐ Consigo editar nome, preço e limites de um plano
+☐ Consigo criar uma promoção com data de início/fim
+☐ Consigo ativar/desativar promoção
+☐ Alterações refletem na frontpage
+
+================================================================================
+FLUXO 6 – AUTENTICAÇÃO
+================================================================================
+
+☐ Consigo criar conta nova
+☐ Consigo fazer login
+☐ Consigo fazer logout
+☐ Consigo recuperar senha
+☐ Sessão persiste após fechar navegador
+
+================================================================================
+FLUXO 7 – LGPD / CONFIGURAÇÕES
+================================================================================
+
+☐ Consigo exportar meus dados
+☐ Consigo solicitar exclusão de conta
+☐ Aceite de termos funciona
+☐ Histórico de aceites é registrado
+
+================================================================================
+TESTES AUTOMATIZADOS (JEST)
+================================================================================
+
+☐ npm run test passa sem erros
+☐ Cobertura mínima de 50%
+
+================================================================================
+TESTES DE BUILD
+================================================================================
+
+☐ npm run build passa sem erros
+☐ Deploy na Vercel funciona
+☐ Não há erros de TypeScript
+
+================================================================================
+LEGENDA
+================================================================================
+
+☐ = Não testado / Pendente
+☑ = Testado e funcionando
+✗ = Testado e com problema
+
+================================================================================
+TESTES REALIZADOS (29-30/11/2025)
+================================================================================
+
+FLUXO 5 – ADMIN / PLANOS:
+☑ Consigo acessar /admin/planos como admin (CORRIGIDO)
+☑ Vejo lista de todos os planos (B2C e B2B)
+☐ Consigo editar nome, preço e limites de um plano
+☑ Consigo criar uma promoção com data de início/fim (RLS CORRIGIDO)
+☐ Consigo ativar/desativar promoção
+☐ Alterações refletem na frontpage
+
+FLUXO 6 – AUTENTICAÇÃO:
+☑ Consigo fazer login com etailoffice@gmail.com
+☑ Admin é reconhecido corretamente após correção
+
+TESTES DE BUILD:
+☑ npm run build passa sem erros (129 páginas)
+☑ Deploy na Vercel funciona
+☑ Não há erros de TypeScript
+
+CORREÇÕES APLICADAS:
+☑ Botão "Config Menu" agora vai para /admin/menu-config (não localhost)
+☑ Diário unificado - rotas duplicadas arquivadas em app/_archive/
+☑ Links do dashboard atualizados para rotas oficiais
+☑ Build passou com 129 páginas
+☑ Badge "Perfil de Clareza" implementado no Diário
+☑ Badge "Perfil de Clareza" + "Intenso" implementado na Timeline
+☑ Tipos JournalEntryType adicionados em types/database.ts
+
+ROTAS OFICIAIS DO DIÁRIO:
+☑ /diario → Lista de entradas
+☑ /diario/novo → Criar entrada
+☑ /diario/[id] → Visualizar entrada
+☑ /diario/[id]/editar → Editar entrada
+☑ /diario/timeline → Timeline de Padrões
+
+ETAPA 2 - TRIÂNGULO CLAREZA ⇄ DIÁRIO ⇄ CHAT:
+☐ Fazer Teste de Clareza e salvar como base → Deve criar entrada no diário
+☐ Entrada criada deve ter entry_type = 'clarity_baseline'
+☐ Entrada criada deve ter clarity_test_id preenchido
+☐ Chat deve receber contexto dos episódios recentes do diário
+☐ Chat deve receber perfil de clareza do usuário
+☐ Verificar logs no console do servidor (Vercel) para confirmar injeção de contexto
+☐ Acessar /diario/novo?from=clarity_result → Deve pré-preencher formulário
+☐ Formulário pré-preenchido deve ter título, tags e descrição do perfil de clareza
+
+MIGRATION OBRIGATÓRIA (executar no Supabase):
+ALTER TABLE public.journal_entries 
+ADD COLUMN IF NOT EXISTS entry_type TEXT DEFAULT 'normal';
+
+ALTER TABLE public.journal_entries 
+ADD COLUMN IF NOT EXISTS clarity_test_id UUID REFERENCES public.clarity_tests(id);
+
+ETAPA 3 - DIÁRIO + TIMELINE + DASHBOARD CONECTADOS AO TRIÂNGULO:
+☐ /diario → Entradas clarity_baseline devem mostrar badge "Perfil de Clareza"
+☐ /diario/timeline → Entradas clarity_baseline devem mostrar badge "Perfil de Clareza"
+☐ /diario/timeline → Entradas com mood_intensity >= 7 devem mostrar badge "Intenso"
+☐ /dashboard → Deve mostrar dados reais de clareza (não mock)
+☐ /dashboard → Deve mostrar últimas entradas do diário reais
+☐ /dashboard → Estatísticas (testes, episódios, mensagens) devem ser reais
+☐ Fluxo completo: Teste Clareza → Salvar Base → Ver entrada no Diário com badge
+☐ Fluxo completo: Teste Clareza → Salvar Base → Ver entrada na Timeline com badge
+
+ETAPA 4 - CHAT → DIÁRIO (SALVAR RESUMO):
+☐ API /api/chat/save-summary funciona (POST com auth)
+☐ Botão "Salvar no Diário" aparece no header do chat após 2+ mensagens do usuário
+☐ Modal de resumo abre ao clicar no botão
+☐ Modal permite editar texto, ajustar intensidade (slider 0-10) e tags
+☐ Ao salvar, cria entrada no diário com entry_type = 'chat_summary'
+☐ Entrada salva aparece no /diario com badge "Resumo do Chat" (💬)
+☐ Entrada salva aparece no /diario/timeline com badge "Resumo do Chat"
+☐ Modal de encerramento de conversa oferece checkbox para salvar resumo
+☐ Se marcar checkbox e clicar "Continuar para salvar resumo", abre modal de resumo
+☐ Fluxo completo: Chat → Salvar resumo → Ver no Diário com badge
+
+================================================================================
+ETAPA 5 - EDITOR VISUAL DA FRONTPAGE:
+================================================================================
+
+☐ Migration 007_frontpage_config.sql executada no Supabase
+☐ Tabela frontpage_config criada com dados seed
+☐ API /api/admin/frontpage-editor funciona (GET retorna configs)
+☐ API /api/admin/frontpage-editor funciona (PUT atualiza config)
+☐ /admin/frontpage-editor carrega sem erro
+☐ Editor de Hero permite editar título, subtítulo e CTAs
+☐ Editor de FAQ permite adicionar/remover perguntas
+☐ Editor de Depoimentos permite adicionar/remover itens
+☐ Botão "Salvar" atualiza dados no banco
+☐ /admin/frontpage-visual carrega sem erro
+☐ Preview mostra alterações em tempo real
+☐ Preview responsivo funciona (desktop/tablet/mobile)
+☐ Alterações salvas refletem na frontpage real
+☐ Fallback funciona se tabela não existir
+
+================================================================================
+ETAPA 6 - TRIÂNGULO V2 (FILTROS + MAPA NO DASHBOARD):
+================================================================================
+
+FILTROS NO /diario:
+☐ Filtro "Todos" mostra todas as entradas
+☐ Filtro "Perfil de Clareza" mostra apenas entries clarity_baseline
+☐ Filtro "Resumo do Chat" mostra apenas entries chat_summary
+☐ Filtro "Episódios Normais" mostra apenas entries normal ou sem tipo
+☐ Mensagem amigável quando filtro não retorna resultados
+☐ Badges existentes continuam funcionando
+
+FILTROS + LEGENDA NO /diario/timeline:
+☐ Filtros por entry_type funcionam igual ao /diario
+☐ Legenda do Triângulo aparece corretamente:
+   - ✨ Perfil de Clareza
+   - 💬 Resumo do Chat
+   - 🔥 Episódio Intenso (≥7)
+☐ Filtro não quebra a timeline existente
+
+CARD "ESTADO DO TRIÂNGULO" NO /dashboard:
+☐ Card aparece na seção correta do dashboard
+☐ Coluna "Clareza" mostra se tem Perfil base salvo
+☐ Coluna "Diário" mostra contagem dos últimos 30 dias
+☐ Coluna "Chat" mostra contagem de resumos dos últimos 30 dias
+☐ Status "Triângulo Ativo" aparece quando os 3 lados têm dados
+☐ Status "Incompleto" aparece quando falta algum lado
+☐ Mensagem explicativa indica o que falta completar
+☐ Card funciona em tema claro e escuro
+
+================================================================================
+ETAPA 7.3 - PLANO DE SEGURANÇA NO TRIÂNGULO:
+================================================================================
+
+API /api/safety-plan:
+☐ GET /api/safety-plan retorna plano do usuário autenticado
+☐ GET /api/safety-plan retorna status calculado (NOT_STARTED, IN_PROGRESS, READY)
+☐ POST /api/safety-plan cria novo plano
+☐ POST /api/safety-plan cria entrada no diário com entry_type='safety_plan'
+☐ PATCH /api/safety-plan atualiza plano existente
+☐ PATCH /api/safety-plan cria entrada no diário de atualização
+☐ API retorna 401 se não autenticado
+☐ API retorna 409 se tentar criar plano que já existe
+
+DASHBOARD - Card "Plano de Segurança":
+☐ Card aparece no Dashboard
+☐ Card mostra status NOT_STARTED com cor cinza
+☐ Card mostra status IN_PROGRESS com cor amarela
+☐ Card mostra status READY com cor verde
+☐ Card tem link para /plano-seguranca
+☐ Card mostra contagem de contatos de emergência
+
+DASHBOARD - Banner de Risco Físico:
+☐ Banner aparece se hasPhysicalRisk = true E plano não está READY
+☐ Banner NÃO aparece se plano está READY
+☐ Banner tem cor vermelha se plano NOT_STARTED
+☐ Banner tem cor amarela se plano IN_PROGRESS
+☐ Banner tem link para /plano-seguranca
+
+CHAT - Detecção de Risco Físico:
+☐ Digitar "ele me bateu" mostra banner de alerta
+☐ Digitar "me ameaçou" mostra banner de alerta
+☐ Digitar "medo de morrer" mostra banner de alerta
+☐ Banner tem link para /plano-seguranca
+☐ risk_alert é criado no banco de dados
+☐ risk_alert tem source='chat', level='HIGH', category='PHYSICAL_VIOLENCE'
+
+DIÁRIO - Badge "Plano de Segurança":
+☐ Entradas com entry_type='safety_plan' mostram badge 🛡️
+☐ Badge aparece no /diario
+☐ Badge aparece no /diario/timeline
+☐ Badge tem estilo vermelho
+
+TESTE DE CLAREZA - risk_alert automático:
+☐ Ao salvar perfil com hasPhysicalRisk=true, cria risk_alert
+☐ risk_alert tem category='PHYSICAL_VIOLENCE'
+
+FLUXO COMPLETO:
+☐ Criar Plano de Segurança → Ver entrada no Diário com badge 🛡️
+☐ Atualizar Plano de Segurança → Ver nova entrada no Diário
+☐ Digitar frase de risco no Chat → Ver banner + risk_alert criado
+☐ Fazer teste com risco físico → Ver risk_alert criado
+
+================================================================================
+ETAPA 7.4 – QA TRIÂNGULO + PLANO DE SEGURANÇA (30/11/2025)
+================================================================================
+
+OBJETIVO: Validar que a ETAPA 7.3 funciona corretamente e não abre buracos de segurança.
+
+T1 – TESTE DE CLAREZA COM RISCO FÍSICO:
+☐ Teste com categoria física >= 30% marca has_physical_risk = true
+☐ risk_alert é criado com source='clarity_test', category='PHYSICAL_VIOLENCE'
+☐ Dashboard mostra banner de risco físico
+☐ Card do Plano de Segurança reflete o status correto
+
+T2 – CHAT COM RISCO FÍSICO (REGEX):
+☐ Mensagem "ele me bateu" dispara detecção
+☐ Mensagem "me ameaçou" dispara detecção
+☐ Mensagem "medo de morrer" dispara detecção
+☐ Banner vermelho aparece no chat
+☐ risk_alert é criado com source='chat', level='HIGH'
+☐ Resposta da IA não quebra após detecção
+
+T3 – PLANO DE SEGURANÇA + DIÁRIO:
+☐ POST /api/safety-plan cria plano + entrada no diário
+☐ PATCH /api/safety-plan atualiza plano + entrada no diário
+☐ entry_type='safety_plan' está correto na entrada
+☐ Badge 🛡️ aparece no /diario
+☐ Badge 🛡️ aparece no /diario/timeline
+
+T4 – DASHBOARD (CARD + BANNERS):
+☐ Card mostra NOT_STARTED (cinza) quando não há plano
+☐ Card mostra IN_PROGRESS (amarelo) quando plano incompleto
+☐ Card mostra READY (verde) quando plano completo
+☐ Banner vermelho aparece: hasPhysicalRisk + NOT_STARTED
+☐ Banner amarelo aparece: hasPhysicalRisk + IN_PROGRESS
+☐ Banner NÃO aparece: hasPhysicalRisk + READY
+☐ Não há crash se não existir plano
+
+T5 – SEGURANÇA / RLS:
+☐ /api/safety-plan filtra por user_id do usuário logado
+☐ /api/clarity/activate-profile filtra por user_id
+☐ /api/chat/route.ts (risk_alert) filtra por user_id
+☐ Usuário A não consegue ver dados do Usuário B
+☐ Tabelas safety_plans, risk_alerts, journal_entries têm RLS ativo
+
+STATUS DOS TESTES (30/11/2025 16:45):
+- T1: [X] PASS – risk_alert criado corretamente, filtra por user_id
+- T2: [X] PASS – regex funciona, backend usa user autenticado
+- T3: [X] PASS – entry_type='safety_plan', diário criado
+- T4: [X] PASS – card/banners funcionam, sem crash
+- T5: [X] PASS – todas APIs filtram por user_id autenticado
+
+RE-AUDITORIA (02/12/2025 18:55):
+- T1: [X] PASS – app/api/clarity/activate-profile/route.ts:291-317 cria risk_alert
+- T2: [X] PASS – app/chat/page.tsx:373 regex, :376-394 createRiskAlert, :1882-1915 banner
+- T3: [X] PASS – app/api/safety-plan/route.ts:78-115 createDiaryEntry com entry_type='safety_plan'
+- T4: [X] PASS – app/dashboard/page.tsx:1039-1172 card + banners condicionais
+- T5: [X] PASS – RLS em database/migrations/20241202_safety_plan_risk_alerts.sql:84-109
+- BUILD: [X] PASS – 170 páginas compiladas sem erros
+
+================================================================================
+ETAPA 12.1 – INFRA DE CLIENTES PROFISSIONAIS
+================================================================================
+
+API /api/professional/clients:
+☐ GET retorna lista vazia se não há clientes
+☐ GET retorna 401 se não autenticado
+☐ GET retorna 403 se não tem plano profissional
+☐ POST cria convite com código único
+☐ POST retorna erro se limite de 20 clientes atingido
+
+API /api/professional/clients/[id]:
+☐ GET retorna detalhes do cliente
+☐ GET retorna dados compartilhados se cliente ativo
+☐ PATCH atualiza notas do profissional
+☐ DELETE remove convite pendente
+☐ DELETE retorna erro se cliente não é pendente
+
+Dashboard Profissional:
+☐ Botão "Convidar Cliente" abre modal
+☐ Modal gera código de convite
+☐ Código aparece na tabela de clientes
+☐ Botão de remover convite funciona
+☐ Tabela mostra permissões do cliente ativo
+
+================================================================================
+ETAPA 12.1.1 – PÁGINA DE ACEITE DE CONVITE
+================================================================================
+
+Página /aceitar-convite:
+☐ Usuário não logado vê opções login/cadastro
+☐ Código da URL (?codigo=XXX) é preservado após login
+☐ Usuário logado pode digitar código manualmente
+☐ Código inválido mostra mensagem de erro clara
+☐ Código já usado mostra mensagem apropriada
+
+API /api/professional/invite/validate:
+☐ POST com código válido retorna dados do profissional
+☐ POST com código inválido retorna erro 404
+☐ POST com código já aceito retorna erro 400
+☐ Não requer autenticação
+
+API /api/professional/invite/accept:
+☐ POST sem autenticação retorna 401
+☐ POST com código válido atualiza status para 'active'
+☐ POST preenche client_id com usuário logado
+☐ POST salva permissões escolhidas (share_*)
+☐ POST impede aceitar próprio convite
+☐ POST impede conexão duplicada com mesmo profissional
+
+Fluxo completo:
+☐ Profissional cria convite → código gerado
+☐ Cliente acessa /aceitar-convite?codigo=XXXXXXXX
+☐ Cliente não logado → login → volta para aceite
+☐ Cliente logado → valida → escolhe permissões → confirma
+☐ Profissional vê cliente ativo no dashboard
+
+UX/Ética:
+☐ Aviso "Radar NÃO substitui terapia/laudo" visível
+☐ Cliente pode desmarcar permissões sensíveis
+☐ Tela de sucesso mostra o que foi autorizado
+
+================================================================================
+ETAPA 12.1.2 – REVOGAÇÃO DE ACESSO PELO CLIENTE
+================================================================================
+
+Página /configuracoes/profissionais:
+☐ Usuário não logado é redirecionado para login
+☐ Usuário sem conexões vê mensagem "Nenhum profissional conectado"
+☐ Lista mostra todos os profissionais conectados
+☐ Status visual correto (verde=ativo, amarelo=pausado, cinza=revogado)
+☐ Nome do profissional aparece corretamente
+
+Ação Revogar:
+☐ Botão "Revogar" aparece para conexões ativas
+☐ Modal de confirmação aparece antes de revogar
+☐ Após revogar, status muda para 'revoked'
+☐ Permissões (share_*) são zeradas ao revogar
+☐ Profissional não consegue mais ver dados do cliente
+
+Ação Pausar/Retomar:
+☐ Botão "Pausar" aparece para conexões ativas
+☐ Após pausar, status muda para 'paused'
+☐ Botão "Retomar" aparece para conexões pausadas
+☐ Após retomar, status volta para 'active'
+
+Edição de Permissões:
+☐ Botão "Permissões" expande painel de edição
+☐ Toggles funcionam para cada share_*
+☐ Alterações são salvas imediatamente
+☐ Profissional vê apenas dados autorizados
+
+API /api/client/connections:
+☐ GET retorna lista de conexões do cliente
+☐ GET retorna 401 se não autenticado
+☐ Dados do profissional são enriquecidos (nome)
+
+API /api/client/connections/[id]:
+☐ PATCH com action='revoke' funciona
+☐ PATCH com action='pause' funciona (só se ativo)
+☐ PATCH com action='resume' funciona (só se pausado)
+☐ PATCH com action='update_permissions' funciona
+☐ PATCH retorna 404 se conexão não pertence ao cliente
+
+================================================================================
+ETAPA 12.2 – RELATÓRIO BÁSICO POR CLIENTE
+================================================================================
+
+Página /dashboard-profissional/clientes/[id]:
+☐ Profissional não logado é redirecionado
+☐ Profissional sem plano profissional vê erro 403
+☐ Profissional vê relatório do cliente ativo
+☐ Profissional não vê relatório de cliente revogado/pausado
+☐ Aviso ético aparece no topo do relatório
+
+Módulos do Relatório:
+☐ Módulo Clareza aparece se share_clarity_tests = true
+☐ Módulo Diário aparece se share_journal_entries = true
+☐ Módulo Chat aparece se share_chat_summaries = true
+☐ Módulo Segurança aparece se share_safety_plan = true
+☐ Módulo Alertas aparece se share_risk_alerts = true
+☐ Módulos não autorizados NÃO aparecem
+
+Conteúdo dos Módulos:
+☐ Clareza: total testes, última zona, evolução
+☐ Diário: total entradas, entradas/semana, intensidade média
+☐ Chat: total sessões, sessões recentes
+☐ Segurança: plano existe? status
+☐ Alertas: total, não resolvidos, recentes
+
+Impressão/PDF:
+☐ Botão "Imprimir / PDF" funciona
+☐ Layout de impressão está correto
+☐ Aviso ético aparece na versão impressa
+
+API /api/professional/reports/[clientId]:
+☐ GET retorna relatório completo
+☐ GET retorna 401 se não autenticado
+☐ GET retorna 403 se não tem plano profissional
+☐ GET retorna 403 se conexão não está ativa
+☐ GET retorna 404 se cliente não existe
+☐ Dados respeitam share_* do cliente
+
+Dashboard Profissional:
+☐ Botão "Relatório" aparece para clientes ativos
+☐ Botão leva para /dashboard-profissional/clientes/[id]
+☐ Clientes pendentes/revogados não têm botão de relatório
+
+================================================================================
+ETAPA 12.3 – EXPORTAÇÃO EM MASSA V1 (CSV)
+================================================================================
+
+Botão CSV na página de relatório:
+☐ Botão "CSV" aparece ao lado de "Imprimir / PDF"
+☐ Clique no botão inicia download do arquivo
+☐ Nome do arquivo: radar-cliente-[nome]-[data].csv
+
+Conteúdo do CSV:
+☐ Header com nome do cliente e data
+☐ Aviso ético presente no arquivo
+☐ Resumo do cliente (nome, conexão, última atividade)
+☐ Permissões autorizadas listadas
+☐ Módulos aparecem apenas se share_* = true
+☐ Dados de clareza (se autorizado)
+☐ Dados de diário (se autorizado)
+☐ Dados de chat (se autorizado)
+☐ Dados de segurança (se autorizado)
+☐ Dados de alertas (se autorizado)
+
+Segurança:
+☐ CSV só é gerado se profissional tem acesso ao cliente
+☐ Dados não autorizados NÃO aparecem no CSV
+
+================================================================================
+ETAPA 13 – INFRA WHITE-LABEL V1
+================================================================================
+
+Página /dashboard-profissional/marca:
+☐ Página carrega corretamente
+☐ Profissional não logado é redirecionado
+☐ Profissional sem plano profissional é redirecionado
+
+Formulário de marca:
+☐ Campo "Nome Público" funciona
+☐ Campo "Tagline" funciona
+☐ Cores predefinidas funcionam (clique seleciona)
+☐ Color picker funciona
+☐ Campo de cor hex aceita entrada manual
+☐ Campo "URL do Logo" funciona
+☐ Preview do logo aparece se URL válida
+☐ Toggle "Powered by Radar" funciona
+☐ Preview em tempo real atualiza
+
+Salvar configuração:
+☐ Botão "Salvar" envia dados para API
+☐ Mensagem de sucesso aparece
+☐ Dados são persistidos (recarregar página mantém valores)
+☐ Validação de cor hex funciona (rejeita formato inválido)
+
+API /api/professional/brand:
+☐ GET retorna configuração existente
+☐ GET retorna defaults se não existe
+☐ GET retorna 401 se não autenticado
+☐ GET retorna 403 se não tem plano profissional
+☐ POST cria nova configuração
+☐ POST atualiza configuração existente
+☐ POST valida formato de cor hex
+
+Dashboard Profissional:
+☐ Link "Configurar Marca" aparece nos links rápidos
+☐ Link leva para /dashboard-profissional/marca
+
+================================================================================
+MIGRATIONS PENDENTES (EXECUTAR NO SUPABASE):
+================================================================================
+
+1. 007_frontpage_config.sql
+   - Cria tabela frontpage_config
+   - Insere dados seed (hero, faq, testimonials, etc.)
+   - Configura RLS para admins
+
+2. 20241201_create_professional_clients.sql (ETAPA 12.1)
+   - Cria tabela professional_clients
+   - Campos: professional_id, client_id, status, invite_code, share_*, etc.
+   - RLS: profissional vê seus clientes, cliente vê suas conexões
+   - Trigger para updated_at automático
+
+3. 20241201_fix_professional_clients_nullable.sql (ETAPA 12.1.1)
+   - Torna client_id nullable (necessário para convites pendentes)
+   - Ajusta constraint unique
+   - Adiciona policy para validação pública de códigos
+
+4. 20241201_create_professional_brand.sql (ETAPA 13)
+   - Cria tabela professional_brand
+   - Campos: display_name, brand_color, logo_url, tagline, show_radar_branding
+   - RLS: profissional só vê/edita sua marca
+   - RLS: clientes podem ver marca do profissional conectado
+   - Trigger para updated_at automático
+
+================================================================================
+BLOCO 14-20 – TESTES PLANEJADOS
+================================================================================
+
+ETAPA 14 – LOJA SIMPLIFICADA (CONCLUÍDO 01/12/2025):
+✅ Página /loja carrega sem erro
+✅ Add-ons aparecem com preços corretos
+✅ Botão de compra redireciona para Stripe (via /api/stripe/addon-checkout)
+✅ Página /loja/sucesso mostra confirmação
+☐ Webhook do Stripe processa compra (pendente: criar webhook handler)
+☐ Add-on é liberado após pagamento (pendente: tabela user_addons)
+NOTA: Checkout funciona, mas entrega do add-on requer webhook e tabela no banco
+
+ETAPA 15 – BETA COM 5 USUÁRIAS (CONCLUÍDO 01/12/2025):
+✅ /admin/beta-testers carrega (guia completo de recrutamento)
+✅ Migration 20241201_beta_testers.sql criada
+✅ API /api/beta/feedback funciona (POST/GET)
+✅ API /api/beta/events funciona (POST/GET)
+✅ Componente BetaFeedbackWidget criado
+✅ Hook useBetaTracking criado
+☐ Executar migration no Supabase (pendente)
+☐ Integrar BetaFeedbackWidget no layout principal
+☐ Testar fluxo completo de feedback
+
+ETAPA 16 – ORÁCULO V1 (CONCLUÍDO 01/12/2025):
+✅ /admin/oraculo carrega
+✅ 7 perguntas-chave são respondidas
+✅ Dados agregados de: user_profiles, clarity_tests, journal_entries, beta_feedback, beta_events
+✅ Links para /admin/analytics, /admin/metricas, /admin/insights
+✅ Registrado em admin-features-registry.ts
+☐ Conectar com dados reais de MRR (Stripe)
+☐ Adicionar gráficos de tendência
+
+ETAPA 17 – LIMPEZA DASHBOARDS (CONCLUÍDO 01/12/2025):
+✅ Dashboard principal da usuária: /dashboard (Trilha do Herói)
+✅ Dashboard profissional: /dashboard-profissional
+✅ Legados redirecionam: /dashboard-v2, /dashboard-premium
+✅ Links atualizados em 9 arquivos
+✅ Admin redireciona para /admin após login
+☐ Testar navegação completa em produção
+
+ETAPA 18 – LIMPEZA ADMIN (CONCLUÍDO 01/12/2025):
+✅ Menu admin reorganizado
+✅ Oráculo é o PRIMEIRO item do menu
+✅ Curadoria Central logo após
+✅ Termos Aceitos movido para o final
+✅ Ícones adicionados ao AdminSidebar
+☐ Testar menu em produção
+
+ETAPA 19 – MANUAIS (CONCLUÍDO 01/12/2025):
+✅ docs/MANUAL-USUARIA.md existe e é legível
+✅ docs/MANUAL-PROFISSIONAL.md existe
+✅ docs/MANUAL-ADMIN.md existe
+✅ docs/MANUAL-DEV.md existe
+✅ docs/MANUAL-WHITELABEL.md existe
+☐ Revisar conteúdo com stakeholders
+
+ETAPA 20 – LÂMPADA (CONCLUÍDO 01/12/2025):
+✅ LAMPADA-RADAR.txt existe na raiz
+✅ Estrutura de seções está clara (6 seções)
+✅ Bugs, Confusões, Decisões, Ideias, Dívidas, Notas
+☐ Revisar periodicamente e atualizar
+
+🎉 BLOCO 14-20 CONCLUÍDO! MVP 1.0 PRONTO!
+
+================================================================================
+BLOCO 21-25 – PÓS-MVP 1.0
+================================================================================
+
+ETAPA 21 – BILLING SÓLIDO & ADD-ONS (CONCLUÍDO 01/12/2025):
+✅ Migration user_addons criada
+✅ Webhook Stripe processa add-ons
+✅ API /api/addons retorna add-ons do usuário
+✅ API /api/addons/consume consome créditos
+✅ Build passou (161 páginas)
+☐ Executar migration no Supabase
+☐ Criar Price IDs no Stripe Dashboard
+☐ Testar fluxo completo de compra
+☐ Verificar registro em user_addons após pagamento
+
+ETAPA 22 – ORÁCULO V2 (CONCLUÍDO 01/12/2025):
+✅ /api/oraculo-v2 responde com JSON válido
+✅ Migration oraculo_logs criada
+✅ Botão do Oráculo funciona em /admin e /admin/oraculo
+✅ Manuais atualizados (ADMIN, DEV)
+✅ docs/ORACULO-V2-PROMPT.md criado
+☐ Executar migration no Supabase
+☐ Testar chamada ao Oráculo em produção
+☐ Verificar logs em oraculo_logs
+
+ETAPA 23 – SEGURANÇA (CONCLUÍDO 01/12/2025):
+✅ Rate limiting implementado (lib/rate-limit.ts)
+✅ Rate limiting aplicado em /api/oraculo-v2
+✅ Logger estruturado criado (lib/logger.ts)
+✅ /api/health retorna status do sistema
+☐ Aplicar rate limiting em outras rotas sensíveis
+☐ Configurar Sentry para monitoramento de erros
+
+ETAPA 24 – MANUAIS (CONCLUÍDO 01/12/2025):
+✅ MANUAL-ADMIN.md atualizado (seção segurança, links)
+✅ MANUAL-USUARIA.md atualizado (links rápidos, FAQ)
+✅ MANUAL-PROFISSIONAL.md atualizado (links relacionados)
+✅ MANUAL-DEV.md atualizado (APIs, arquivos de projeto)
+✅ MANUAL-WHITELABEL.md atualizado (links para manuais)
+
+ETAPA 25 – QA (CONCLUÍDO 01/12/2025):
+✅ CHECKLIST-POS-MVP.md criado
+✅ LÂMPADA-RADAR.txt atualizado
+✅ Documentação final consolidada
+☐ Executar migrations no Supabase
+☐ Criar Price IDs no Stripe
+☐ Testar fluxos principais manualmente
+
+🎉 BLOCO 21-25 CONCLUÍDO!
+
+================================================================================
+BLOCO 26-30 – ORÁCULO V2 MULTIPERFIL + INFRA COMUNICAÇÃO IA
+================================================================================
+
+ETAPA 26 – TEMPLATE DE RESUMO + CHECKLIST + REGRAS (CONCLUÍDO 01/12/2025):
+✅ docs/FORMATO-RESUMO-ETAPAS.md atualizado (v2.0)
+✅ docs/CHECKLIST-RESUMO-IA.md criado
+✅ docs/PATCHES-ORACULO-COMPLETO.md criado
+✅ scripts/validar-resumo-ia.ts criado
+✅ Build verificado
+
+ETAPA 27 – ORACULO_V2_CORE (CONCLUÍDO 01/12/2025):
+✅ lib/oraculo-core.ts criado
+✅ Prompts por perfil implementados
+✅ /api/oraculo-v2 refatorado
+✅ docs/ORACULO-CORE.md criado
+✅ Build passou: 163 páginas
+☐ Testar chamadas ao core em produção
+
+ETAPA 28 – INFRA MULTIPERFIL (CONCLUÍDO 01/12/2025):
+✅ database/migrate-oraculo-settings.sql criado
+✅ lib/oraculo-settings.ts criado
+✅ /api/oraculo-v2 integrado com verificação de limites
+✅ Build passou: 163 páginas
+☐ Executar migration no Supabase
+☐ Testar verificação de limites em produção
+☐ Testar bloqueio quando limite atingido
+
+ETAPA 29 – EXPOR ORÁCULO V2 (CONCLUÍDO 01/12/2025):
+✅ components/OraculoMultiperfil.tsx criado
+✅ components/OraculoHint.tsx criado
+✅ Build passou: 163 páginas
+☐ Testar Oráculo como profissional (após habilitar no Supabase)
+☐ Testar Oráculo como whitelabel (após habilitar no Supabase)
+☐ Verificar limites por perfil em produção
+
+ETAPA 30 – INTEGRAÇÃO GERADOR DE SAAS + QA (CONCLUÍDO 01/12/2025):
+✅ docs/ORACULO-CORE-SAAS.md criado
+✅ lib/__tests__/oraculo-core.test.ts criado
+✅ Build passou: 163 páginas
+🎉 BLOCO 26-30 CONCLUÍDO!
+
+☐ Executar testes: npx jest lib/__tests__/oraculo-core.test.ts
+☐ Executar migration no Supabase
+☐ Testar Oráculo em produção
+
+================================================================================
+ETAPAS 31-44 – ORÁCULO MULTI-INSTÂNCIA + ANALYTICS
+================================================================================
+
+ETAPA 31-35 – INFRAESTRUTURA MULTI-INSTÂNCIA (CONCLUÍDO 01/12/2025):
+✅ database/migrate-oraculo-instances.sql criado
+✅ lib/oraculo-instances.ts criado
+✅ app/admin/oraculo-instances/page.tsx criado
+✅ app/admin/oraculo-instances/[id]/page.tsx criado
+✅ APIs de instâncias e métricas criadas
+✅ Build passou: 166 páginas
+
+ETAPA 36 – SISTEMA DE API KEYS (CONCLUÍDO 01/12/2025):
+✅ database/migrate-oraculo-api-keys.sql criado
+✅ lib/oraculo-api-keys.ts criado
+✅ API /api/admin/oraculo-instances/[id]/keys criada
+✅ UI de gerenciamento de keys
+✅ Build passou: 166 páginas
+
+ETAPA 37 – SISTEMA DE WEBHOOKS (CONCLUÍDO 01/12/2025):
+✅ database/migrate-oraculo-webhooks.sql criado
+✅ lib/oraculo-webhooks.ts criado
+✅ API /api/admin/oraculo-instances/[id]/webhooks criada
+✅ Assinatura HMAC-SHA256
+✅ Build passou: 166 páginas
+
+ETAPA 38 – SISTEMA DE BILLING (CONCLUÍDO 01/12/2025):
+✅ database/migrate-oraculo-billing.sql criado
+✅ lib/oraculo-billing.ts criado
+✅ API /api/admin/oraculo-instances/[id]/billing criada
+✅ Planos: Free, Starter, Pro, Enterprise
+✅ Build passou: 166 páginas
+
+ETAPA 39 – LOGS DETALHADOS (CONCLUÍDO 01/12/2025):
+✅ database/migrate-oraculo-usage-logs.sql criado
+✅ lib/oraculo-usage-logs.ts criado
+✅ API /api/admin/oraculo-instances/[id]/logs criada
+✅ Integração na API pública
+✅ Build passou: 166 páginas
+
+ETAPA 40 – DOCUMENTAÇÃO INTERATIVA (CONCLUÍDO 01/12/2025):
+✅ app/docs/api/page.tsx criado
+✅ Exemplos em JavaScript, Python, cURL, PHP
+✅ Playground para testar endpoints
+✅ Documentação de webhooks
+✅ Build passou: 167 páginas
+
+ETAPA 41 – TESTES AUTOMATIZADOS (CONCLUÍDO 01/12/2025):
+✅ lib/__tests__/oraculo-instances.test.ts criado
+✅ lib/__tests__/oraculo-api-keys.test.ts criado
+✅ lib/__tests__/oraculo-billing.test.ts criado
+✅ vitest.config.ts e vitest.setup.ts criados
+✅ Scripts de teste atualizados no package.json
+✅ Build passou: 167 páginas
+
+ETAPA 42 – DASHBOARD ANALYTICS (CONCLUÍDO 01/12/2025):
+✅ app/admin/analytics-dashboard/page.tsx criado
+✅ 6 cards de métricas com variação percentual
+✅ Gráficos: área, barras, pizza, horizontal
+✅ Filtro de período: 7, 30, 90 dias
+✅ Tabela detalhada por instância
+✅ Build passou: 170 páginas
+
+ETAPA 43 – ALERTAS AUTOMÁTICOS (CONCLUÍDO 01/12/2025):
+✅ lib/oraculo-alerts.ts criado
+✅ database/migrate-oraculo-alerts.sql criado
+✅ Tipos: quota_warning, quota_exceeded, error_spike, etc.
+✅ Severidades: info, warning, error, critical
+✅ Build passou: 170 páginas
+
+ETAPA 44 – EXPORTAÇÃO DE RELATÓRIOS (CONCLUÍDO 01/12/2025):
+✅ app/admin/analytics-dashboard/export/page.tsx criado
+✅ Formatos: CSV, JSON, PDF
+✅ Tipos: queries, tokens, instances, billing, full
+✅ Download automático
+✅ Build passou: 170 páginas
+
+🎉 BLOCO 40-44 CONCLUÍDO!
+
+MIGRATIONS PENDENTES (executar no Supabase):
+☐ migrate-oraculo-instances.sql
+☐ migrate-oraculo-api-keys.sql
+☐ migrate-oraculo-webhooks.sql
+☐ migrate-oraculo-billing.sql
+☐ migrate-oraculo-usage-logs.sql
+☐ migrate-oraculo-alerts.sql
+
+TESTES PENDENTES:
+☐ npm run test (vitest)
+☐ Testar criação de instância whitelabel
+☐ Testar API pública com API key
+☐ Testar webhooks com assinatura
+☐ Testar billing e limites
+☐ Testar exportação de relatórios
+
+================================================================================
+BLOCO 26-30 - ORÁCULO V2 MULTIPERFIL
+================================================================================
+
+[ETAPA 26] TEMPLATE DE RESUMO + CHECKLIST + REGRAS DE LINGUAGEM
+- [ ] Verificar docs/FORMATO-RESUMO-ETAPAS.md está na v3.0
+- [ ] Verificar docs/REGRAS-COMUNICACAO-IA.md está na v2.0
+- [ ] Verificar docs/CHECKLIST-RESUMO-IA.md está na v2.0
+- [ ] Testar script: npx ts-node scripts/validar-resumo-ia.ts "texto com opcional"
+  - Deve retornar INVÁLIDO
+- [ ] Testar script: npx ts-node scripts/validar-resumo-ia.ts "texto sem palavras proibidas"
+  - Deve retornar VÁLIDO (se tiver seções obrigatórias)
+
+[ETAPA 27] ORACULO_V2_CORE (núcleo reutilizável)
+- [ ] Verificar lib/oraculo-core.ts existe e exporta funções
+- [ ] Verificar /api/oraculo-v2 usa o core
+- [ ] Testar chamada ao Oráculo V2 como admin
+- [ ] Verificar resposta JSON com: modo, risco, titulo_curto, resposta_principal
+
+[ETAPA 28] INFRA MULTIPERFIL
+- [ ] Verificar tabela oraculo_settings existe
+- [ ] Verificar lib/oraculo-settings.ts existe
+- [ ] Testar limites por plano (daily_limit, weekly_limit, monthly_limit)
+- [ ] Testar flag enabled por perfil
+
+[ETAPA 29] ORÁCULO V2 PARA NOVOS PERFIS
+- [ ] Verificar componente OraculoHintProfissional.tsx
+- [ ] Verificar componente OraculoHintWhitelabel.tsx
+- [ ] Testar Oráculo no dashboard-profissional
+- [ ] Verificar respeito aos limites
+
+[ETAPA 30] INTEGRAÇÃO COM GERADOR DE SAAS
+- [ ] Verificar docs/ORACULO-CORE-SAAS.md existe
+- [ ] Verificar testes unitários do ORACULO_V2_CORE
+- [ ] Testar cenários com roles diferentes
+
+================================================================================
+FLUXO GERADOR-SAAS – FASE 1
+================================================================================
+
+[TESTE VISUAL] Página /admin/gerador-saas
+- [ ] Acessar /admin/gerador-saas como admin
+- [ ] Verificar que a página carrega sem erros
+- [ ] Verificar título "Gerador de SaaS" aparece
+- [ ] Verificar cards explicativos (SAAS-TEMATICO e CORE-BRANCO)
+- [ ] Verificar lista de projetos gerados (pode estar vazia)
+
+[TESTE CRIAÇÃO] Botões de Simulação
+- [ ] Clicar em "Criar Novo Projeto"
+- [ ] Preencher nome do projeto
+- [ ] Selecionar tipo SAAS-TEMATICO
+- [ ] Preencher descrição
+- [ ] Selecionar módulos
+- [ ] Clicar em "Criar Projeto"
+- [ ] Verificar que projeto aparece na lista com status "Criando..."
+- [ ] Aguardar status mudar para "Pronto"
+
+[TESTE AÇÕES] Ações por Projeto
+- [ ] Clicar em "Ver instruções" - modal deve abrir
+- [ ] Clicar em "Copiar git clone" - deve copiar para clipboard
+- [ ] Clicar em "Baixar ZIP" - deve iniciar download (simulado)
+- [ ] Clicar em "Remover" - deve pedir confirmação e remover
+
+[TESTE CORE-BRANCO] Criação de Core Branco
+- [ ] Repetir fluxo de criação com tipo CORE-BRANCO
+- [ ] Verificar que projeto aparece com ícone diferente
+- [ ] Verificar que origem mostra "RADAR-CORE@BLOCO-45"
+
+================================================================================
+FIM DO CHECKLIST DE TESTES
+================================================================================

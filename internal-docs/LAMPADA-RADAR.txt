@@ -1,0 +1,553 @@
+================================================================================
+💡 LÂMPADA RADAR - OBSERVAÇÕES E PENDÊNCIAS
+================================================================================
+Versão: 2.3
+Última atualização: 03/12/2025 11:15 (UTC-5)
+Responsável: Equipe Radar Narcisista
+
+================================================================================
+🎉 PROGRESSO RECENTE
+================================================================================
+
+🚀 BLOCO GERADOR-SAAS FASE 1 COMPLETO (03/12/2025):
+- ✅ docs/PATCH-GERADOR-SAAS.md (v3.0)
+- ✅ docs/GERADOR-SAAS.md (Visão Geral, Fluxo, Fases)
+- ✅ /admin/gerador-saas (UI funcional)
+- ✅ /api/gerador-saas (API)
+- ✅ lib/gerador-saas-service.ts (Serviço de geração)
+- ✅ database/migrate-gerador-saas.sql (Tabela generated_projects)
+- ✅ templates/KIT-DOCS-TEMPLATE/ (6 arquivos)
+- ✅ ORIGEM-CORE.txt
+
+💡 MODOS DO GERADOR:
+- MODO 1: SAAS-TEMATICO (projeto com tema específico)
+- MODO 2: CORE-BRANCO (template neutro)
+- Cada projeto gerado é 100% INDEPENDENTE
+
+🚀 BLOCO 41-45 COMPLETO (03/12/2025):
+- ✅ ETAPA 41: CLI do Gerador de SaaS
+- ✅ ETAPA 42: Automatizar KIT DE DOCS
+- ✅ ETAPA 43: Sistema de emails transacionais
+- ✅ ETAPA 44: Onboarding guiado (já existia)
+- ✅ ETAPA 45: Analytics avançado
+
+🚀 BLOCO 36-40 COMPLETO (03/12/2025):
+- ✅ ETAPA 36: UI de Overrides Individuais no Admin
+- ✅ ETAPA 37: Rate Limiting Real por Feature
+- ✅ ETAPA 38: Dashboard de Métricas de Features
+- ✅ ETAPA 39: Integração Stripe Checkout + Webhooks
+- ✅ ETAPA 40: Notificações de Limite (80% e 100%)
+
+💡 ARQUIVOS CRIADOS NESTE BLOCO:
+- app/admin/planos-core/page.tsx (UI overrides)
+- app/admin/planos-core/metricas/page.tsx (Dashboard)
+- lib/rate-limiter.ts (Rate limiting)
+- lib/stripe-planos-core.ts (Stripe integration)
+- lib/limit-notifications.ts (Notificações)
+- app/api/webhooks/stripe-planos/route.ts (Webhook)
+- components/LimitNotificationBanner.tsx (Banner)
+- database/migrate-feature-usage.sql (SQL)
+- database/migrate-limit-notifications.sql (SQL)
+
+🚀 BLOCO 31-35 COMPLETO (03/12/2025):
+- ✅ ETAPA 31: Modelar PLANOS_CORE (6 tabelas)
+- ✅ ETAPA 32: Migrar planos atuais (4 profiles)
+- ✅ ETAPA 33: Promoções e Cohorts
+- ✅ ETAPA 34: Overrides e UI Admin
+- ✅ ETAPA 35: Frontpage e GERADOR-SAAS
+
+🚀 BLOCO 32-35 ANTERIOR (02/12/2025):
+- ✅ ETAPA 32: Control Tower & Registro Global de Projetos
+- ✅ ETAPA 33: Telemetria Core para todos os SaaS
+- ✅ ETAPA 34: Help Desk Global e Reportar Problema
+- ✅ ETAPA 35: Vínculo, Desvínculo e Vida Própria dos Filhos
+
+💡 ARQUIVOS CRIADOS NESTE BLOCO:
+- database/migrate-control-tower.sql
+- database/migrate-telemetry-core.sql
+- database/migrate-helpdesk-core.sql
+- lib/control-tower.ts
+- lib/telemetry-core.ts
+- lib/helpdesk-core.ts
+- components/SupportTicketButton.tsx
+- app/admin/control-tower/page.tsx
+- app/admin/control-tower/helpdesk/page.tsx
+- docs/CONTROL-TOWER.md
+
+🎉 BLOCO 26-30 CONCLUÍDO (02/12/2025):
+- ✅ ETAPA 26: Template de resumo + checklist + regras de linguagem
+- ✅ ETAPA 27: ORACULO_V2_CORE (núcleo reutilizável)
+- ✅ ETAPA 28: Infra multiperfil do Oráculo (flags por plano/perfil)
+- ✅ ETAPA 29: Oráculo V2 para novos perfis (OraculoMultiperfil)
+- ✅ ETAPA 30: Integração com Gerador de SaaS (docs/ORACULO-CORE-SAAS.md)
+
+ETAPAS 40-44 CONCLUÍDAS (01/12/2025):
+- ✅ Documentação interativa da API (/docs/api)
+- ✅ Testes automatizados com Vitest
+- ✅ Dashboard Analytics avançado
+- ✅ Sistema de alertas automáticos
+- ✅ Exportação de relatórios (CSV, JSON, PDF)
+- ✅ Builder.io instalado
+- Build atual: 171 páginas
+
+================================================================================
+📋 O QUE É ESTE ARQUIVO?
+================================================================================
+
+A "Lâmpada" é um documento vivo que consolida:
+- 🐛 BUGS conhecidos que ainda não foram corrigidos
+- 🤔 CONFUSÕES que precisam ser esclarecidas
+- ⚖️ DECISÕES técnicas ou de produto tomadas
+- 💡 IDEIAS para o futuro (não implementar agora)
+- ⚠️ DÍVIDAS TÉCNICAS acumuladas
+- 📝 NOTAS importantes para não esquecer
+
+REGRA: Antes de implementar algo novo, consulte este arquivo!
+
+================================================================================
+🐛 BUGS CONHECIDOS
+================================================================================
+
+[B001] Webhook Stripe para add-ons
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (ETAPA 21)
+Prioridade: ALTA
+Descrição: O webhook de pagamento de add-ons não estava criando registros
+           na tabela user_addons após pagamento bem-sucedido.
+Solução: Webhook atualizado em lib/stripe.ts para detectar mode: 'payment'
+         e chamar processAddonPurchase() que insere em user_addons.
+Arquivos: lib/stripe.ts
+Resolvido em: 01/12/2025
+
+[B002] Tabela user_addons não existe
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (ETAPA 21)
+Prioridade: ALTA
+Descrição: A tabela user_addons precisava ser criada no Supabase para
+           armazenar add-ons comprados pelos usuários.
+Solução: Migration criada em database/migrate-user-addons.sql com:
+         - Tabela user_addons com campos completos
+         - RLS para segurança
+         - Funções has_active_addon, get_addon_credits, consume_addon_credit
+Arquivos: database/migrate-user-addons.sql
+Resolvido em: 01/12/2025
+
+[B004] Migration user_addons pendente de execução
+----------------------------------------------------------------------
+Status: 🟡 PENDENTE
+Prioridade: ALTA
+Descrição: A migration database/migrate-user-addons.sql foi criada mas
+           ainda não foi executada no Supabase de produção.
+Impacto: Webhook vai falhar ao tentar inserir em user_addons.
+Workaround: Executar migration manualmente no Supabase SQL Editor.
+Arquivos: database/migrate-user-addons.sql
+Criado em: 01/12/2025
+
+[B003] Cache de menu admin no localStorage
+----------------------------------------------------------------------
+Status: 🟢 BAIXA PRIORIDADE
+Prioridade: BAIXA
+Descrição: O menu admin salva ordem no localStorage, mas novas features
+           podem não aparecer automaticamente para admins existentes.
+Impacto: Admin pode não ver novas telas até limpar cache.
+Workaround: Botão "Limpar cache de IA" no sidebar.
+Arquivos: lib/admin-menu-config.ts
+Criado em: 01/12/2025
+
+================================================================================
+🤔 CONFUSÕES A ESCLARECER
+================================================================================
+
+[C001] Diferença entre /dashboard e /dashboard-v2
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (ETAPA 17)
+Descrição: Havia confusão sobre qual dashboard era o principal.
+Decisão: /dashboard é o principal (Trilha do Herói).
+         /dashboard-v2 e /dashboard-premium redirecionam para /dashboard.
+
+[C002] Onde ficam as configurações de IA?
+----------------------------------------------------------------------
+Status: ✅ DOCUMENTADO
+Descrição: Múltiplas telas de configuração de IA causavam confusão.
+Decisão: 
+  - /admin = Config IAs (visão geral)
+  - /admin/configurar-ias = API Keys
+  - /admin/gerenciar-ias = Adicionar novas IAs
+  - /admin/custos-ia = Monitorar gastos
+  - /admin/mapa-ias = Saúde das IAs
+
+[C003] Qual é a fonte da verdade do projeto?
+----------------------------------------------------------------------
+Status: ✅ DOCUMENTADO
+Descrição: Dúvida sobre qual arquivo consultar primeiro.
+Decisão:
+  1. TUDO PARA O GPT.txt - Histórico completo
+  2. ATLAS-RADAR-NARCISISTA.txt - Mapa técnico
+  3. ROADMAP-RADAR.txt - Roadmap e etapas
+  4. TESTES-RADAR.txt - Checklist de testes
+  5. LAMPADA-RADAR.txt - Este arquivo (observações)
+
+================================================================================
+⚖️ DECISÕES TOMADAS
+================================================================================
+
+[D001] Stack tecnológica
+----------------------------------------------------------------------
+Data: 28/11/2025
+Decisão: Next.js 16 + Supabase + Stripe + TailwindCSS 4
+Motivo: Stack moderna, serverless, fácil de escalar.
+Alternativas descartadas: Firebase, Prisma, MongoDB.
+
+[D002] Modelo de negócio
+----------------------------------------------------------------------
+Data: 28/11/2025
+Decisão: Freemium B2C + Plano Profissional B2B
+Motivo: Alcançar vítimas (gratuito) + monetizar via profissionais.
+Planos: Gratuito, Essencial, Avançado, Premium, Profissional.
+
+[D003] Oráculo como primeiro item do menu admin
+----------------------------------------------------------------------
+Data: 01/12/2025
+Decisão: Oráculo (defaultOrder: 0) é o primeiro item do menu.
+Motivo: Visão executiva deve ser o ponto de entrada do admin.
+Arquivos: app/admin/admin-features-registry.ts
+
+[D004] Termos Aceitos no final do menu
+----------------------------------------------------------------------
+Data: 01/12/2025
+Decisão: Termos Aceitos (defaultOrder: 50) fica no final.
+Motivo: Área sensível, não deve ser acessada acidentalmente.
+Arquivos: app/admin/admin-features-registry.ts
+
+[D005] Dashboards unificados
+----------------------------------------------------------------------
+Data: 01/12/2025
+Decisão: 
+  - Usuária: /dashboard (Trilha do Herói)
+  - Profissional: /dashboard-profissional
+  - Legados redirecionam automaticamente
+Motivo: Evitar confusão e manter UX consistente.
+
+[D006] Estrutura de billing de add-ons
+----------------------------------------------------------------------
+Data: 01/12/2025
+Decisão:
+  - Tabela user_addons com addon_key correspondendo ao id em addons-config.ts
+  - Webhook Stripe detecta mode: 'payment' para add-ons
+  - Créditos gerenciados por credits_total e credits_remaining
+  - Expiração via expires_at (NULL = permanente)
+Motivo: Fluxo consistente entre Stripe, banco e app.
+Arquivos: database/migrate-user-addons.sql, lib/stripe.ts, lib/user-addons.ts
+
+================================================================================
+💡 IDEIAS PARA O FUTURO (NÃO IMPLEMENTAR AGORA)
+================================================================================
+
+[I001] App mobile nativo
+----------------------------------------------------------------------
+Prioridade: MÉDIA
+Descrição: Criar app React Native para iOS e Android.
+Benefício: Melhor UX, notificações push, modo offline.
+Dependências: MVP estável, validação de mercado.
+Estimativa: 3-6 meses.
+
+[I002] Integração com WhatsApp
+----------------------------------------------------------------------
+Prioridade: ALTA
+Descrição: Permitir que usuárias interajam via WhatsApp.
+Benefício: Canal mais acessível, menor barreira de entrada.
+Dependências: API do WhatsApp Business, custos.
+Estimativa: 1-2 meses.
+
+[I003] Gamificação avançada
+----------------------------------------------------------------------
+Prioridade: BAIXA
+Descrição: Adicionar conquistas, níveis, recompensas.
+Benefício: Aumentar engajamento e retenção.
+Dependências: Métricas de uso estáveis.
+Estimativa: 1 mês.
+
+[I004] Comunidade moderada
+----------------------------------------------------------------------
+Prioridade: MÉDIA
+Descrição: Fórum/chat entre usuárias com moderação.
+Benefício: Suporte entre pares, senso de comunidade.
+Dependências: Sistema de moderação, políticas claras.
+Estimativa: 2-3 meses.
+
+[I005] IA de voz
+----------------------------------------------------------------------
+Prioridade: BAIXA
+Descrição: Permitir interação por voz com o Coach.
+Benefício: Acessibilidade, conveniência.
+Dependências: Whisper API, custos de transcrição.
+Estimativa: 1 mês.
+
+[I006] Relatório para advogados
+----------------------------------------------------------------------
+Prioridade: ALTA
+Descrição: Gerar relatório formatado para uso em processos.
+Benefício: Valor agregado para profissionais, diferencial.
+Dependências: Validação jurídica, templates.
+Estimativa: 2 semanas.
+
+[I010] 💡 GERADOR-DE-SAAS (CORE, FILHOS E INDEPENDÊNCIA)
+----------------------------------------------------------------------
+Prioridade: ✅ FASE 1 COMPLETA
+Status: IMPLEMENTADO (03/12/2025)
+
+Descrição:
+  - RADAR-CORE é o projeto mãe
+  - GERADOR-DE-SAAS cria novos projetos a partir deste core
+  - Dois modos de criação:
+    • SAAS-TEMATICO (já com tema)
+    • CORE-BRANCO (template neutro)
+  - Cada projeto gerado ganha:
+    • código próprio
+    • TUDO/ATLAS/ROADMAP/TESTES/LÂMPADA/ORIGEM-CORE específicos
+  - Depois de criado, o filho é independente
+  - Melhorias no RADAR-CORE só afetam projetos novos
+
+Arquivos implementados:
+  - docs/PATCH-GERADOR-SAAS.md
+  - docs/GERADOR-SAAS.md
+  - app/admin/gerador-saas/page.tsx
+  - app/api/gerador-saas/route.ts
+  - lib/gerador-saas-service.ts
+  - database/migrate-gerador-saas.sql
+  - templates/KIT-DOCS-TEMPLATE/
+
+Fases futuras:
+  - FASE 2: Integração com GitHub API
+  - FASE 3: Gerador avançado (temas, presets, wizard)
+
+[I007] 💡 ORÁCULO V2 MULTIPERFIL (BLOCO 26-30) – PATCH OFICIAL
+----------------------------------------------------------------------
+Prioridade: ALTA (para o BLOCO 26-30)
+Status: ⏳ FUTURO EXPLÍCITO (não implementar antes do BLOCO 26)
+
+Descrição: 
+  Expandir o uso do ORÁCULO V2 para TODOS os perfis:
+  - user_role = "usuaria"
+  - user_role = "profissional"
+  - user_role = "admin" (já funciona no BLOCO 21-25)
+  - user_role = "dev"
+  - user_role = "whitelabel"
+
+Benefício: IA de suporte unificada para todo o produto.
+
+Dependências: 
+  - ✅ ETAPA 22 (Oráculo V2 para admin) concluída
+  - ⏳ Feature flags por perfil/plano
+  - ⏳ Controle de risco por perfil
+  - ⏳ Atualização de manuais
+
+Estimativa: BLOCO 26-30.
+
+Módulo ORACULO_V2_CORE:
+  - Unificar em módulo reutilizável
+  - Acoplável ao GERADOR DE SAAS
+  - Todo SaaS gerado pode nascer com Oráculo embutido
+
+IMPORTANTE (PATCH ORÁCULO):
+  - Ver docs/PATCH-ORACULO.md para regras completas
+  - BLOCO 21-25: Oráculo V2 é SÓ PARA ADMIN
+  - BLOCO 26-30: Abertura para outros perfis
+
+================================================================================
+⚠️ DÍVIDAS TÉCNICAS
+================================================================================
+
+[T001] Testes automatizados
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (ETAPA 41)
+Descrição: Testes unitários implementados com Vitest.
+Solução: lib/__tests__/*.test.ts, vitest.config.ts
+Resolvido em: 01/12/2025
+
+[T002] Documentação de APIs
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (ETAPA 40)
+Descrição: Documentação interativa em /docs/api.
+Solução: Página com exemplos em JS, Python, cURL, PHP.
+Resolvido em: 01/12/2025
+
+[T003] Logs estruturados
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (03/12/2025)
+Descrição: Logger estruturado em JSON implementado.
+Solução: lib/pino-logger.ts com níveis, contexto e métodos especializados.
+Arquivos: lib/pino-logger.ts
+Resolvido em: 03/12/2025
+
+[T004] Monitoramento de erros
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (03/12/2025)
+Descrição: Sistema de captura de erros implementado.
+Solução: lib/sentry.ts com captureException, captureMessage, contexto.
+Arquivos: lib/sentry.ts
+Resolvido em: 03/12/2025
+NOTA: Adicionar SENTRY_DSN no .env para ativar envio ao Sentry.
+
+[T005] Rate limiting
+----------------------------------------------------------------------
+Status: ✅ RESOLVIDO (ETAPA 23)
+Descrição: Rate limiting implementado em lib/rate-limit.ts.
+Solução: Configurações AI (10/min), AUTH (5/min), API (100/min).
+Resolvido em: 01/12/2025
+
+================================================================================
+📝 NOTAS IMPORTANTES
+================================================================================
+
+[N001] Credenciais de produção
+----------------------------------------------------------------------
+Data: 01/12/2025
+Nota: Todas as credenciais de produção estão no Vercel.
+      NUNCA commitar .env.local com chaves reais.
+      Stripe está em modo TESTE até lançamento.
+
+[N002] Backup do banco
+----------------------------------------------------------------------
+Data: 01/12/2025
+Nota: Supabase faz backup automático diário.
+      Para restore, acessar Supabase Dashboard > Backups.
+
+[N003] Deploy automático
+----------------------------------------------------------------------
+Data: 01/12/2025
+Nota: Push para main = deploy automático no Vercel.
+      Verificar build antes de fazer push.
+      URL: https://vercel.com/radar-narcisista-brs-projects
+
+[N004] Contatos de emergência
+----------------------------------------------------------------------
+Data: 01/12/2025
+Nota: 
+  - Eduardo (dev): [email]
+  - Suporte Vercel: vercel.com/support
+  - Suporte Supabase: supabase.com/support
+  - Suporte Stripe: stripe.com/support
+
+================================================================================
+📊 MÉTRICAS DE SAÚDE DO PROJETO
+================================================================================
+
+Última verificação: 03/12/2025 00:15
+
+| Métrica                  | Valor    | Status |
+|--------------------------|----------|--------|
+| Etapas concluídas        | 44/44    | ✅     |
+| Bloco atual              | COMPLETO | ✅     |
+| Build passando           | Sim      | ✅     |
+| Páginas geradas          | 171      | ✅     |
+| Bugs críticos            | 0        | ✅     |
+| Dívidas técnicas         | 0        | ✅     |
+| Documentação atualizada  | Sim      | ✅     |
+| Último deploy            | Hoje     | ✅     |
+
+================================================================================
+🚀 IMPLEMENTAÇÕES RECENTES (03/12/2025)
+================================================================================
+
+[I001] Sentry - Monitoramento de Erros
+----------------------------------------------------------------------
+Arquivo: lib/sentry.ts
+Funções: captureException, captureMessage, setUser, setContext
+NOTA: Adicionar SENTRY_DSN no .env para ativar
+
+[I002] Pino Logger - Logs Estruturados
+----------------------------------------------------------------------
+Arquivo: lib/pino-logger.ts
+Funções: info, warn, error, request, response, apiError, userAction, security, oraculo
+Formato: JSON estruturado para produção
+
+[I003] Centro de Alertas
+----------------------------------------------------------------------
+Arquivo: components/AlertCenter.tsx
+Funções: Painel de risk_alerts, badge para header, telefones de emergência
+Integração: Dashboard do usuário
+
+[I004] Detecção de Risco
+----------------------------------------------------------------------
+Arquivo: lib/risk-detection.ts
+Funções: detectRiskFromTags, detectRiskFromText, createRiskAlert
+Tags: CRITICAL_TAGS, HIGH_RISK_TAGS, MEDIUM_RISK_TAGS
+
+[I005] Dashboard de Métricas do Oráculo
+----------------------------------------------------------------------
+Arquivo: app/admin/oraculo-metricas/page.tsx
+Funções: Métricas de uso, custos, tokens, configurações por perfil
+
+[I006] Monitor de Custos do Oráculo
+----------------------------------------------------------------------
+Arquivo: components/OraculoCostMonitor.tsx
+Funções: Custo atual, projeção, alertas de limite, versão compacta
+
+================================================================================
+🔄 HISTÓRICO DE ATUALIZAÇÕES DESTE ARQUIVO
+================================================================================
+
+01/12/2025 21:30 - ETAPA 30 (INTEGRAÇÃO GERADOR DE SAAS + QA)
+  - docs/ORACULO-CORE-SAAS.md criado (guia de integração)
+  - lib/__tests__/oraculo-core.test.ts criado (testes unitários)
+  - Métricas atualizadas: 30/32 etapas
+  - 🎉 BLOCO 26-30 CONCLUÍDO!
+
+01/12/2025 21:00 - ETAPA 29 (EXPOR ORÁCULO V2 PARA OUTROS PERFIS)
+  - components/OraculoMultiperfil.tsx criado
+  - components/OraculoHint.tsx criado
+  - Suporta todos os perfis: admin, usuaria, profissional, dev, whitelabel
+
+01/12/2025 20:30 - ETAPA 28 (INFRA MULTIPERFIL)
+  - database/migrate-oraculo-settings.sql criado
+  - lib/oraculo-settings.ts criado
+  - /api/oraculo-v2 integrado com verificação de limites
+
+01/12/2025 20:00 - ETAPA 27 (ORACULO_V2_CORE)
+  - lib/oraculo-core.ts criado (núcleo reutilizável)
+  - Prompts por perfil: admin, usuaria, profissional, dev, whitelabel
+  - /api/oraculo-v2 refatorado para usar o core
+  - docs/ORACULO-CORE.md criado
+
+01/12/2025 19:30 - ETAPA 26 (Template de Resumo + Checklist + Regras)
+  - BLOCO 26-30 INICIADO!
+  - docs/FORMATO-RESUMO-ETAPAS.md atualizado (v2.0)
+  - docs/CHECKLIST-RESUMO-IA.md criado
+  - docs/PATCHES-ORACULO-COMPLETO.md criado
+  - scripts/validar-resumo-ia.ts criado
+
+01/12/2025 18:00 - ETAPA 25 (QA Técnico + Checklist Pós-MVP)
+  - CHECKLIST-POS-MVP.md criado
+  - Métricas atualizadas: 24/25 etapas, 163 páginas
+  - 🎉 BLOCO 21-25 CONCLUÍDO!
+
+01/12/2025 17:00 - ETAPA 24 (Manuais & Links Internos)
+  - Todos os 5 manuais atualizados com links
+
+01/12/2025 16:00 - ETAPA 23 (Segurança Técnica)
+  - Rate limiting e logger implementados
+  - /api/health criado
+
+01/12/2025 15:30 - ETAPA 22 (Oráculo V2)
+  - API e componente do Oráculo V2 criados
+
+01/12/2025 15:00 - ETAPA 21 (Billing Sólido & Add-ons)
+  - B001 e B002 resolvidos (webhook e tabela user_addons)
+  - B004 adicionado (migration pendente de execução)
+  - D006 adicionada (estrutura de billing de add-ons)
+  - I007 adicionada (Oráculo V2 Multiperfil para BLOCO 26-30)
+  - Métricas atualizadas: 21/25 etapas, 161 páginas
+
+01/12/2025 13:30 - Criação inicial (ETAPA 20)
+  - Estrutura base com 6 seções
+  - 3 bugs conhecidos documentados
+  - 3 confusões esclarecidas
+  - 5 decisões registradas
+  - 6 ideias para o futuro
+  - 5 dívidas técnicas mapeadas
+  - 4 notas importantes
+
+================================================================================
+FIM DO ARQUIVO LÂMPADA
+================================================================================

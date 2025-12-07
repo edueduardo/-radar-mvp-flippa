@@ -1,0 +1,213 @@
+{
+  "app": {
+    "name": "Radar Narcisista",
+    "tagline": "Claridad para relaciones tóxicas",
+    "description": "Herramienta de apoyo para identificar y documentar patrones abusivos"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "diary": "Diario",
+    "clarity_test": "Test de Claridad",
+    "ai_coach": "Coach IA",
+    "login": "Entrar",
+    "logout": "Salir",
+    "signup": "Registrarse",
+    "profile": "Perfil",
+    "settings": "Configuración"
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "continue": "Continuar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "confirm": "Confirmar",
+    "close": "Cerrar"
+  },
+  "dashboard": {
+    "welcome": "Bienvenida",
+    "subtitle": "Tu viaje de claridad comienza aquí",
+    "recent_entries": "Entradas Recientes",
+    "mood_tracker": "Rastreador de Humor",
+    "risk_indicators": "Indicadores de Riesgo",
+    "next_steps": "Próximos Pasos",
+    "view_all": "Ver Todas"
+  },
+  "diary": {
+    "title": "Diario Emocional",
+    "new_entry": "Nueva Entrada",
+    "entry_title": "Título de la Entrada",
+    "entry_content": "¿Qué pasó?",
+    "how_feel": "¿Cómo te sientes?",
+    "tags_suggested": "Sugeridas",
+    "risk_level": "Nivel de Riesgo",
+    "save_entry": "Guardar Entrada",
+    "timeline": "Línea de Tiempo",
+    "no_entries": "Sin entradas aún"
+  },
+  "clarity_test": {
+    "title": "Test de Claridad",
+    "subtitle": "Autoevaluación para ganar claridad sobre tu relación",
+    "start_test": "Iniciar Test",
+    "question": "Pregunta",
+    "progress": "Progreso",
+    "finish": "Finalizar",
+    "results": "Resultados",
+    "score": "Puntuación",
+    "interpretation": "Interpretación",
+    "recommendations": "Recomendaciones"
+  },
+  "ai_coach": {
+    "title": "Coach de Claridad",
+    "subtitle": "Chatea con nuestra IA para ganar perspectiva",
+    "ask_question": "Haz una pregunta",
+    "type_message": "Escribe tu mensaje...",
+    "send": "Enviar",
+    "thinking": "Pensando...",
+    "response": "Respuesta",
+    "examples": "Ejemplos de preguntas:"
+  },
+  "auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar Contraseña",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "remember_me": "Recordarme",
+    "already_have_account": "¿Ya tienes una cuenta?",
+    "dont_have_account": "¿No tienes una cuenta?",
+    "sign_in": "Iniciar Sesión",
+    "sign_up": "Registrarse",
+    "sign_out": "Cerrar Sesión"
+  },
+  "plans": {
+    "title": "Nuestros Planes",
+    "free": "Gratis",
+    "premium": "Premium",
+    "professional": "Profesional",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "upgrade": "Actualizar",
+    "downgrade": "Degradar",
+    "cancel": "Cancelar Plan",
+    "current_plan": "Plan Actual",
+    "choose_plan": "Elegir Plan"
+  },
+  "admin": {
+    "title": "Panel Administrativo",
+    "users": "Usuarios",
+    "professionals": "Profesionales",
+    "analytics": "Análisis",
+    "settings": "Configuración",
+    "ai_config": "Configuración de IA",
+    "export_data": "Exportar Datos",
+    "system_status": "Estado del Sistema"
+  },
+  "errors": {
+    "404": "Página no encontrada",
+    "500": "Error interno del servidor",
+    "network": "Error de conexión",
+    "validation": "Error de validación",
+    "unauthorized": "No autorizado",
+    "forbidden": "Acceso denegado",
+    "try_again": "Intenta de nuevo",
+    "contact_support": "Contactar soporte"
+  },
+  "success": {
+    "saved": "¡Guardado exitosamente!",
+    "updated": "¡Actualizado exitosamente!",
+    "deleted": "¡Eliminado exitosamente!",
+    "sent": "¡Enviado exitosamente!"
+  },
+  "loading": {
+    "loading": "Cargando...",
+    "saving": "Guardando...",
+    "sending": "Enviando...",
+    "processing": "Procesando..."
+  },
+  "hero": {
+    "title1": "No estás",
+    "title2": "imaginando cosas.",
+    "subtitle": "Si estás aquí, probablemente te has preguntado:",
+    "question1": "\"¿Estoy exagerando?\"",
+    "question2": "\"¿Por qué me siento tan confundida(o) después de hablar con esta persona?\"",
+    "question3": "\"¿Es mi culpa?\"",
+    "question4": "\"¿Por qué nadie más parece ver lo que yo veo?\"",
+    "validation1": "No estás loca(o).",
+    "validation2": "Y no estás sola(o).",
+    "help": "Radar Narcisista te ayuda a",
+    "clarity": "ver con claridad",
+    "whats_happening": "lo que está pasando.",
+    "cta_test": "Hacer el Test Gratis",
+    "cta_learn": "Saber Más"
+  },
+  "header": {
+    "safe": "100% Seguro y Confidencial",
+    "tagline": "Encuentra tu claridad"
+  },
+  "howItWorks": {
+    "title": "Cómo funciona en 3 pasos",
+    "subtitle": "Simple, rápido y 100% confidencial",
+    "step1": {
+      "title": "Haz el Test",
+      "desc": "18 preguntas en 5 minutos. Sin registro obligatorio."
+    },
+    "step2": {
+      "title": "Ve tu Resultado",
+      "desc": "Entiende los patrones de niebla, miedo y límites en tu relación."
+    },
+    "step3": {
+      "title": "Usa las Herramientas",
+      "desc": "Diario, Coach IA y recursos exclusivos para tu camino."
+    },
+    "cta": "Empezar Test Gratis →"
+  },
+  "tools": {
+    "title": "Tus Herramientas",
+    "subtitle": "Todo lo que necesitas para entender, registrar y planificar",
+    "test": {
+      "title": "Test de Claridad",
+      "desc": "18 preguntas que te ayudan a identificar patrones de confusión, miedo y límites."
+    },
+    "diary": {
+      "title": "Diario de Episodios",
+      "desc": "Registra situaciones, emociones y patrones. Tu memoria segura y organizada."
+    },
+    "coach": {
+      "title": "Coach IA de Claridad",
+      "desc": "Habla con una IA empática que te ayuda a organizar tus pensamientos."
+    }
+  },
+  "choose": {
+    "title": "Tú eliges cómo usar",
+    "subtitle": "Dos formas de empezar tu camino",
+    "quick": {
+      "title": "Test Rápido",
+      "subtitle": "Sin cuenta",
+      "desc": "Haz el test, ve tu resultado y vete. Nada se guarda.",
+      "cta": "Empezar Test →"
+    },
+    "radar": {
+      "title": "Radar Completo",
+      "subtitle": "Con cuenta gratuita",
+      "desc": "Tu test se convierte en la base del Radar: alimenta diario, Coach IA y recomendaciones.",
+      "cta": "Crear Cuenta Gratis →"
+    }
+  },
+  "finalCta": {
+    "title": "¿Lista para tener más claridad?",
+    "subtitle": "El primer paso es el más difícil. Pero no tienes que darlo sola.",
+    "cta": "Empezar el Test Gratuito"
+  },
+  "footer": {
+    "description": "Herramienta de autoconocimiento para personas en relaciones difíciles.",
+    "product": "Producto",
+    "support": "Soporte",
+    "emergency": "Emergencia",
+    "copyright": "© 2024 Radar Narcisista. Todos los derechos reservados."
+  }
+}
