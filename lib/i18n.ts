@@ -1311,7 +1311,9 @@ export const adminTranslations = {
 }
 
 export function getAdminTranslation(key: string, locale: Locale = 'pt-BR'): string {
-  return adminTranslations[locale][key] || adminTranslations['pt-BR'][key] || key
+  const translations = adminTranslations[locale] as Record<string, string>
+  const fallback = adminTranslations['pt-BR'] as Record<string, string>
+  return translations[key] || fallback[key] || key
 }
 
 export function getFrontpageDictionary(locale: Locale): FrontpageDictionary {
