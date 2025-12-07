@@ -18,13 +18,6 @@ export default async function LocaleLayout({
   children,
   params
 }: LocaleLayoutProps) {
-  const { locale } = await params
-  
-  return (
-    <html lang={locale}>
-      <body>
-        {children}
-      </body>
-    </html>
-  )
+  // Just pass through children - the root layout handles html/body
+  return <>{children}</>
 }
