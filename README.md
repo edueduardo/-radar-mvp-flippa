@@ -1,8 +1,8 @@
-# 🌐 Radar Narcisista - MVP Multi-idioma
+# Radar Narcisista - MVP Multi-idioma
 
 **Produto:** SaaS para clareza em relacionamentos abusivos  
-**Idiomas:** 🇧🇷 Português | 🇺🇸 English | 🇪🇸 Español  
-**Demo:** https://radar-mvp-flippa.vercel.app  
+**Idiomas:** Português | English | Español  
+**Demo:** https://radar-mvp-flippa-new.vercel.app  
 **Stack:** Next.js 15 + Supabase + Stripe + IA
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
