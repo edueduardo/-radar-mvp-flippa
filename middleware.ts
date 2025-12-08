@@ -6,7 +6,7 @@ const ADMIN_EMAILS = ['etailoffice@gmail.com', 'eduardo.mkt.davila@gmail.com', '
 
 // Idiomas suportados
 const locales = ['pt', 'en', 'es']
-const defaultLocale = 'pt'
+const defaultLocale = 'en'
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
