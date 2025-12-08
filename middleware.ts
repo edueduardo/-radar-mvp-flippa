@@ -20,14 +20,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Verificar se o pathname já tem um locale
-  const pathnameIsMissingLocale = locales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  )
-
-  // Redirecionar para adicionar locale se estiver faltando
-  if (pathnameIsMissingLocale) {
-    // Detectar idioma do navegador
+  // Só redirecionar a página inicial (/) para o locale
+  // As outras rotas existem na raiz do app
+  if (pathname === '/') {
     const acceptLanguage = request.headers.get('accept-language')
     let detectedLocale = defaultLocale
     
@@ -43,10 +38,7 @@ export async function middleware(request: NextRequest) {
     }
 
     return NextResponse.redirect(
-      new URL(
-        `/${detectedLocale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
-        request.url
-      )
+      new URL(`/${detectedLocale}`, request.url)
     )
   }
 
